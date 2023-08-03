@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/nabvar/Navbar';
 import { HomePage } from './pages/HomePage';
 
 function App() {
   return (
     <>
       <header>
-        <h1 className="text-red-700">Hello, World!</h1>
+        <Navbar />
       </header>
       <main>
         <Routes>
