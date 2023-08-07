@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { formData } from '../assets/types/car.types';
+import { formData } from '../../../assets/types/car.types';
 
 function useCarForm(formState: formData) {
   const [carFormData, setFormCarData] = useState<formData>(formState);

@@ -1,4 +1,4 @@
-import CarForm from '../../components/form/CarForm';
+import CarForm from '../components/form/CarForm';
 
 function AddCar() {
   return (

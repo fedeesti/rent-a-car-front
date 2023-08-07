@@ -1,15 +1,13 @@
-import Navbar from './components/nabvar/Navbar';
-import SideBar from './components/side/SideBar';
-import AppRoutes from './components/routes';
-import Footer from './components/footer/Footer';
+import Navbar from './common/components/nabvar/Navbar';
+import SideBar from './common/components/side/SideBar';
+import AppRoutes from './common/routes';
+import Footer from './common/components/footer/Footer';
+import Header from './common/components/header/Header';
 
 function App(): JSX.Element {
   return (
     <>
-      <header>
-        <Navbar />
-        <SideBar />
-      </header>
+      <Header />
       <AppRoutes />
       <Footer />
     </>
