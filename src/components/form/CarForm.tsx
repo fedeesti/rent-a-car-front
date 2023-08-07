@@ -1,76 +1,22 @@
-import axios from 'axios';
-import { useState, ChangeEvent, FormEvent } from 'react';
-
-interface formData {
-  brand: string;
-  model: string;
-  color: string;
-  img: File | null;
-  kms: string;
-  passengers: string;
-  price: string;
-  year: string;
-  transmission: string;
-  airConditioner: string;
-}
+import useCarForm from '../../hooks/useCarForm';
 
 function CarForm() {
-  const [carFormData, setFormCarData] = useState<formData>({
-    brand: '',
-    model: '',
-    color: '',
-    img: null,
-    kms: '',
-    passengers: '',
-    price: '',
-    year: '',
-    transmission: '',
-    airConditioner: '',
-  });
-
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setFormCarData({ ...carFormData, [name]: value });
-  };
-
-  const onChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
-    setFormCarData({ ...carFormData, [name]: value });
-  };
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
-    setFormCarData({ ...carFormData, img: file });
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      console.log(carFormData);
-
-      const formData = new FormData();
-
-      Object.entries(carFormData).forEach(([key, value]) => {
-        return formData.append(key, value);
-      });
-
-      const response = await axios.post('http://localhost:3000/cars', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      console.log(response.data);
-    } catch (error) {
-      console.log('Error submitting the form: ', error);
-    }
-  };
+  const { carFormData, onChangeInput, onChangeSelect, handleImageChange, onSubmitForm } =
+    useCarForm({
+      brand: '',
+      model: '',
+      color: '',
+      img: null,
+      kms: '',
+      passengers: '',
+      price: '',
+      year: '',
+      transmission: '',
+      airConditioner: '',
+    });
 
   return (
-    <form action="" method="post" onSubmit={handleSubmit} data-cy="add-car-form-container">
+    <form action="" method="post" onSubmit={onSubmitForm} data-cy="add-car-form-container">
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
         <div className="sm:col-span-2" data-cy="add-car-brand">
           <label

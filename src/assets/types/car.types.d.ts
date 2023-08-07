@@ -11,3 +11,16 @@ export interface Car {
   transmission: string;
   airConditioner: boolean;
 }
+
+export interface formData {
+  brand: string;
+  model: string;
+  color: string;
+  img: File | null;
+  kms: string;
+  passengers: string;
+  price: string;
+  year: string;
+  transmission: string;
+  airConditioner: string;
+}
