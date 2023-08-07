@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import HomePage from '../../pages/HomePage';
-import CarList from '../../pages/CarList';
-import AddCar from '../form/AddCar';
+import CarList from '../../pages/car/CarList';
+import AddCar from '../../pages/car/AddCar';
 
 function AppRoutes(): JSX.Element {
   return (

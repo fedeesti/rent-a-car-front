@@ -164,5 +164,69 @@ describe('Rent a car', () => {
         cy.get('[data-cy="cars-table-body"]').should('be.visible');
       });
     });
+
+    describe('Add Car', () => {
+      it('should show a form to add a car', () => {
+        cy.get('[data-cy="aside-car-button"]').click();
+        cy.get('[data-cy="car-dropdown-add"]').click();
+
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="add-car-container"]').should('be.visible');
+        cy.get('[data-cy="add-car-title"]').contains('Add a new car');
+        cy.get('[data-cy="add-car-form-container"]').should('be.visible');
+
+        cy.get('[data-cy="add-car-brand"] > label').contains('Brand Name');
+        cy.get('[data-cy="add-car-brand"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type brand name');
+
+        cy.get('[data-cy="add-car-model"] > label').contains('Model');
+        cy.get('[data-cy="add-car-model"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type model');
+
+        cy.get('[data-cy="add-car-color"] > label').contains('Color');
+        cy.get('[data-cy="add-car-color"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type color');
+
+        cy.get('[data-cy="add-car-kms"] > label').contains('Kilometres');
+        cy.get('[data-cy="add-car-kms"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', '12');
+
+        cy.get('[data-cy="add-car-passengers"] > label').contains('Passengers');
+        cy.get('[data-cy="add-car-passengers"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', '4');
+
+        cy.get('[data-cy="add-car-price"] > label').contains('Price');
+        cy.get('[data-cy="add-car-price"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', '$2999');
+
+        cy.get('[data-cy="add-car-year"] > label').contains('Year');
+        cy.get('[data-cy="add-car-year"] > input')
+          .invoke('attr', 'placeholder')
+          .should('contain', '1999');
+
+        cy.get('[data-cy="add-car-transmission"] > label').contains('Transmission');
+
+        cy.get('[data-cy="add-car-air-conditioner"] > h3').contains('Air Conditioner');
+        cy.get('[data-cy="add-air-conditioner-input-container"]').should('be.visible');
+        cy.get('[data-cy="add-air-conditioner-input-true"]')
+          .invoke('val')
+          .should('contain', 'true');
+        cy.get('[data-cy="add-air-conditioner-input-false"]')
+          .invoke('val')
+          .should('contain', 'false');
+
+        cy.get('[data-cy="add-car-update-logo"] > label').contains('Upload logo');
+        cy.get('[data-cy="add-car-update-logo"] > input').should('be.visible');
+
+        cy.get('[data-cy="add-car-btn-submit"]').should('contain', 'Add car').and('be.visible');
+      });
+    });
   });
 });
