@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Car } from '../../assets/types/car.types';
 
-function Table({ cars }: { cars: Car[] }) {
+function Table({ cars }: { cars: Car[] }): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500" data-cy="cars-table-container">

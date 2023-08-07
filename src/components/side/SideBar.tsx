@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function SideBar() {
+function SideBar(): JSX.Element {
   const [carDropdown, setCarDropdown] = useState<boolean>(false);
   const [clientDropdown, setClientDropdown] = useState<boolean>(false);
   const [reservationDropdown, setReservationDropdown] = useState<boolean>(false);
 
   return (
     <aside
-      className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-dark-green sm:translate-x-0"
+      className="fixed top-0 left-0 z-40 w-56 h-screen pt-20 transition-transform -translate-x-full bg-dark-green sm:translate-x-0"
       data-cy="aside-container"
     >
       <div className="h-full px-3 pb-4 overflow-y-auto bg-dark-green dark:bg-gray-800 text-white">
@@ -62,9 +62,9 @@ function SideBar() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m1 1 4 4 4-4"
                 />
               </svg>
@@ -73,7 +73,7 @@ function SideBar() {
               <ul id="dropdown-example" className="py-2 space-y-2" data-cy="dropdown-car-container">
                 <li>
                   <Link
-                    to="#"
+                    to="/car"
                     className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="car-dropdown-list"
                   >
@@ -82,7 +82,7 @@ function SideBar() {
                 </li>
                 <li>
                   <Link
-                    to="#"
+                    to="/car/create"
                     className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="car-dropdown-add"
                   >
@@ -120,9 +120,9 @@ function SideBar() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m1 1 4 4 4-4"
                 />
               </svg>
@@ -185,9 +185,9 @@ function SideBar() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m1 1 4 4 4-4"
                 />
               </svg>

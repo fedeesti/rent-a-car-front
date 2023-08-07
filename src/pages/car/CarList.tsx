@@ -1,7 +1,7 @@
-import { Car } from '../assets/types/car.types';
-import Header from '../components/table/Header';
-import Pagination from '../components/table/Pagination';
-import Table from '../components/table/Table';
+import { Car } from '../../assets/types/car.types';
+import Header from '../../components/table/Header';
+import Pagination from '../../components/table/Pagination';
+import Table from '../../components/table/Table';
 
 const cars: Car[] = [
   {
