@@ -14,7 +14,6 @@ describe('Rent a car', () => {
     cy.visit(URL_APP);
   });
 
-  // cy.get('[data-cy=""]')
   describe('UI layout', () => {
     describe('Navbar', () => {
       it('should show a navbar', () => {
@@ -123,10 +122,12 @@ describe('Rent a car', () => {
 
   describe('Cars management', () => {
     describe('Car Table', () => {
-      it('should show the page table header', () => {
+      beforeEach(() => {
         cy.get('[data-cy="aside-car-button"]').click();
         cy.get('[data-cy="car-dropdown-list"]').click();
+      });
 
+      it('should show the page table header', () => {
         cy.url().should('include', '/car');
 
         cy.get('[data-cy="header-list-container"]').should('be.visible');
@@ -144,9 +145,6 @@ describe('Rent a car', () => {
       });
 
       it('should show a cars table ', () => {
-        cy.get('[data-cy="aside-car-button"]').click();
-        cy.get('[data-cy="car-dropdown-list"]').click();
-
         cy.url().should('include', '/car');
 
         const CARS_TABLE_HEAD_NAME = ['Brand', 'Model', 'Year', 'KMS', 'Price per day', 'Actions'];
@@ -166,10 +164,12 @@ describe('Rent a car', () => {
     });
 
     describe('Add Car', () => {
-      it('should show a form to add a car', () => {
+      beforeEach(() => {
         cy.get('[data-cy="aside-car-button"]').click();
         cy.get('[data-cy="car-dropdown-add"]').click();
+      });
 
+      it('should show a form to add a car', () => {
         cy.url().should('include', '/create');
 
         cy.get('[data-cy="add-car-container"]').should('be.visible');
@@ -226,6 +226,56 @@ describe('Rent a car', () => {
         cy.get('[data-cy="add-car-update-logo"] > input').should('be.visible');
 
         cy.get('[data-cy="add-car-btn-submit"]').should('contain', 'Add car').and('be.visible');
+      });
+    });
+
+    describe('Car Details', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-car-button"]').click();
+        cy.get('[data-cy="car-dropdown-list"]').click();
+        cy.get('[data-cy="cars-table-row-link-view"]').eq(0).click();
+      });
+
+      it("should show a car's details on a card", () => {
+        cy.url().should('include', '/view');
+
+        cy.get('[data-cy="car-card-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-title"]').should('be.visible').and('contain', 'Chevrolet Corsa');
+        cy.get('[data-cy="car-card-details-container"]').should('be.visible');
+
+        cy.get('[data-cy="car-card-year-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-year-title"]').contains('Year');
+        cy.get('[data-cy="car-card-year-description"]').contains('2010');
+
+        cy.get('[data-cy="car-card-color-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-color-title"]').contains('Color');
+        cy.get('[data-cy="car-card-color-description"]').contains('Gris');
+
+        cy.get('[data-cy="car-card-price-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-price-title"]').contains('Price per day');
+        cy.get('[data-cy="car-card-price-description"]').contains('8000');
+
+        cy.get('[data-cy="car-card-kms-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-kms-title"]').contains('Kilometres');
+        cy.get('[data-cy="car-card-kms-description"]').contains('40000');
+
+        cy.get('[data-cy="car-card-passengers-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-passengers-title"]').contains('Passengers');
+        cy.get('[data-cy="car-card-passengers-description"]').contains('5');
+
+        cy.get('[data-cy="car-card-transmission-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-transmission-title"]').contains('Transmision');
+        cy.get('[data-cy="car-card-transmission-description"]').contains('manual');
+
+        cy.get('[data-cy="car-card-air-conditioner-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-air-conditioner-title"]').contains('Air conditioner');
+        cy.get('[data-cy="car-card-air-conditioner-description"]').contains('Yes');
+
+        cy.get('[data-cy="car-card-btn-container"]').should('be.visible');
+        cy.get('[data-cy="car-card-btn-update"] > a')
+          .should('be.visible')
+          .and('contain', 'Update car');
+        cy.get('[data-cy="car-card-btn-delete"] > a').should('be.visible').and('contain', 'Delete');
       });
     });
   });

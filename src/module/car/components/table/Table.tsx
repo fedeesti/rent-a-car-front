@@ -43,7 +43,7 @@ function Table({ cars }: { cars: Car[] }): JSX.Element {
               <td className="px-1 py-3 flex items-center">
                 <div className="flex item-center justify-center">
                   <div className="w-4 mr-2 hover:text-dark-green hover:scale-125">
-                    <Link to={`/car/${car.id}`}>
+                    <Link to={`/car/${car.id}/view`} data-cy="cars-table-row-link-view">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
