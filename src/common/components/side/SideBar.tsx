@@ -20,7 +20,7 @@ function SideBar(): JSX.Element {
               data-cy="aside-overview-link"
             >
               <svg
-                className="w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                className="w-5 h-5 transition duration-75"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -37,12 +37,12 @@ function SideBar(): JSX.Element {
           <li data-cy="aside-car-container">
             <button
               type="button"
-              className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-light-green"
+              className="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-light-green"
               onClick={() => setCarDropdown(!carDropdown)}
               data-cy="aside-car-button"
             >
               <svg
-                className="flex-shrink-0 w-5 h-5  transition duration-75 group-hover:text-gray-900"
+                className="flex-shrink-0 w-5 h-5  transition duration-75 text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -74,7 +74,7 @@ function SideBar(): JSX.Element {
                 <li>
                   <Link
                     to="/car"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
+                    className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="car-dropdown-list"
                   >
                     List
@@ -83,7 +83,7 @@ function SideBar(): JSX.Element {
                 <li>
                   <Link
                     to="/car/create"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
+                    className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="car-dropdown-add"
                   >
                     Add
@@ -95,12 +95,12 @@ function SideBar(): JSX.Element {
           <li data-cy="aside-client-container">
             <button
               type="button"
-              className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-light-green"
+              className="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-light-green"
               onClick={() => setClientDropdown(!clientDropdown)}
               data-cy="aside-client-btn"
             >
               <svg
-                className="flex-shrink-0 w-5 h-5  transition duration-75 group-hover:text-gray-900"
+                className="flex-shrink-0 w-5 h-5  transition duration-75 group-hover"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -136,7 +136,7 @@ function SideBar(): JSX.Element {
                 <li>
                   <Link
                     to="#"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
+                    className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-client-list"
                   >
                     List
@@ -145,7 +145,7 @@ function SideBar(): JSX.Element {
                 <li>
                   <Link
                     to="#"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
+                    className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-client-add"
                   >
                     Add
@@ -157,12 +157,12 @@ function SideBar(): JSX.Element {
           <li data-cy="aside-reservation-container">
             <button
               type="button"
-              className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-light-green"
+              className="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-light-green"
               onClick={() => setReservationDropdown(!reservationDropdown)}
               data-cy="aside-reservation-btn"
             >
               <svg
-                className="flex-shrink-0 w-5 h-5  transition duration-75 dark:text-gray-400 group-hover:text-gray-900"
+                className="flex-shrink-0 w-5 h-5  transition duration-75"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -201,7 +201,7 @@ function SideBar(): JSX.Element {
                 <li>
                   <Link
                     to="#"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
+                    className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-reservation-list"
                   >
                     List
@@ -210,7 +210,7 @@ function SideBar(): JSX.Element {
                 <li>
                   <Link
                     to="#"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
+                    className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-reservation-add"
                   >
                     Add
