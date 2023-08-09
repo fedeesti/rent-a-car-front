@@ -18,7 +18,7 @@ export class CarService {
     }
   }
 
-  async getById(id: string): Promise<Car> {
+  async getById(id: string | undefined): Promise<Car> {
     try {
       const { data: car } = await axios.get(`${URL_API_BASE}${BASE_ROUTE}/${id}`);
 

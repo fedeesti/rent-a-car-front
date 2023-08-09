@@ -1,21 +1,11 @@
-import { Car } from '../assets/types/car.types';
+import { useParams } from 'react-router-dom';
 import CarCard from '../components/card/CarCard';
-
-const car: Car = {
-  id: 1,
-  brand: 'Chevrolet',
-  model: 'Corsa',
-  color: 'Gris',
-  img: '/src/module/car/assets/images/chevrolet-corsa.jpg',
-  kms: 40000,
-  passengers: 5,
-  price: 8000,
-  year: 2010,
-  transmission: 'manual',
-  airConditioner: true,
-};
+import useCar from '../hooks/useCar';
 
 function CarDetails(): JSX.Element {
+  const { carId } = useParams();
+  const { car } = useCar(carId);
+
   return (
     <main className="p-4 sm:ml-56">
       <section className="p-4 mt-14 mx-auto rounded max-w-2xl lg:py-16">

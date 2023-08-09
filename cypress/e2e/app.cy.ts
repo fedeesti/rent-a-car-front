@@ -306,7 +306,10 @@ describe('Rent a car', () => {
 
     describe('Car Details', () => {
       beforeEach(() => {
-        cy.intercept('GET', `${URL_API_BASE}/cars`, { fixture: 'cars.json' }).as('getCars');
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as('getCars');
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' }).as(
+          'getCars',
+        );
         cy.get('[data-cy="aside-car-button"]').click();
         cy.get('[data-cy="car-dropdown-list"]').click();
         cy.get('[data-cy="cars-table-row-link-view"]').eq(0).click();

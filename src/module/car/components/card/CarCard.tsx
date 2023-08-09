@@ -4,7 +4,7 @@ import Modal from '../modal/Modal';
 import useCarModal from '../../hooks/useCarModal';
 
 interface PropTypes {
-  car: Car;
+  car: Car | undefined;
 }
 
 function CarCard({ car }: PropTypes): JSX.Element {
@@ -17,7 +17,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
         data-cy="car-card-container"
       >
         <div className="relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
-          <img src={car.img} alt="car logo" data-cy="car-card-logo" />
+          <img src={car?.img} alt="car logo" data-cy="car-card-logo" />
           <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
         </div>
         <div className="p-6">
@@ -26,7 +26,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
               className="block font-sans text-xl font-medium leading-snug tracking-normal text-blue-gray-900 antialiased"
               data-cy="car-card-title"
             >
-              {car.brand} {car.model}
+              {car?.brand} {car?.model}
             </h5>
           </div>
 
@@ -39,7 +39,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Year:
               </p>
               <p className="mr-2" data-cy="car-card-year-description">
-                {car.year}
+                {car?.year}
               </p>
             </div>
             <div
@@ -50,7 +50,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Color:
               </p>
               <p className="mr-2" data-cy="car-card-color-description">
-                {car.color}
+                {car?.color}
               </p>
             </div>
             <div
@@ -61,7 +61,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Price per day:
               </p>
               <p className="mr-2" data-cy="car-card-price-description">
-                {car.price}
+                {car?.price}
               </p>
             </div>
             <div
@@ -72,7 +72,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Kilometres:
               </p>
               <p className="mr-2" data-cy="car-card-kms-description">
-                {car.kms}
+                {car?.kms}
               </p>
             </div>
             <div
@@ -83,7 +83,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Passengers:
               </p>
               <p className="mr-2" data-cy="car-card-passengers-description">
-                {car.passengers}
+                {car?.passengers}
               </p>
             </div>
             <div
@@ -94,7 +94,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Transmision:
               </p>
               <p className="mr-2" data-cy="car-card-transmission-description">
-                {car.transmission}
+                {car?.transmission}
               </p>
             </div>
             <div
@@ -105,7 +105,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
                 Air conditioner:
               </p>
               <p className="mr-2" data-cy="car-card-air-conditioner-description">
-                {car.airConditioner ? 'Yes' : 'No'}
+                {car?.airConditioner ? 'Yes' : 'No'}
               </p>
             </div>
           </div>
@@ -119,7 +119,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
             className="text-white bg-dark-green select-none font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
             data-cy="car-card-btn-update"
           >
-            <Link to={`/car/${car.id}/update`}>Update car</Link>
+            <Link to={`/car/${car?.id}/update`}>Update car</Link>
           </button>
           <button
             type="button"
@@ -144,7 +144,11 @@ function CarCard({ car }: PropTypes): JSX.Element {
         </div>
       </div>
       {showModal && (
-        <Modal logo={car.img} name={`${car.brand}-${car.model}`} onClose={closeModal} />
+        <Modal
+          logo={car ? car.img : ''}
+          name={`${car?.brand}-${car?.model}`}
+          onClose={closeModal}
+        />
       )}
     </>
   );

@@ -10,7 +10,6 @@ function useCars(): { cars: Car[] | undefined } {
   const fetchCars = async (): Promise<void> => {
     try {
       const res: Car[] = await service.getAll();
-      console.log(res);
       setCars(res);
     } catch (error) {
       console.log(error);
