@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 const URL_APP = 'http://localhost:5173';
+const URL_API_BASE = 'http://localhost:3000';
 
 const route = {
   home: '/',
@@ -23,7 +24,6 @@ describe('Rent a car', () => {
         cy.get('[data-cy="open-menu-mobile"]').should('not.be.visible');
       });
     });
-
     describe('Aside', () => {
       it('should show an aside', () => {
         cy.get('[data-cy="aside-container"]').should('be.visible');
@@ -48,7 +48,6 @@ describe('Rent a car', () => {
           .and('be.visible');
         cy.get('[data-cy="dropdown-reservation-container"]').should('not.exist');
       });
-
       it('should open a side cars and show a list', () => {
         cy.get('[data-cy="aside-car-name"]').should('contain', 'Cars');
         cy.get('[data-cy="dropdown-car-container"]').should('not.exist');
@@ -62,7 +61,6 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="aside-car-button"]').click();
       });
-
       it('should open a side clients and show a list', () => {
         cy.get('[data-cy="aside-client-name"]').should('contain', 'Client');
         cy.get('[data-cy="dropdown-client-container"]').should('not.exist');
@@ -76,7 +74,6 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="aside-client-btn"]').click();
       });
-
       it('should open a side reservations and show a list', () => {
         cy.get('[data-cy="aside-reservation-name"]').should('contain', 'Reservation');
         cy.get('[data-cy="dropdown-reservation-container"]').should('not.exist');
@@ -91,7 +88,6 @@ describe('Rent a car', () => {
         cy.get('[data-cy="aside-reservation-btn"]').click();
       });
     });
-
     describe('Footer', () => {
       it('should show a footer', () => {
         cy.get('[data-cy="footer-container"]').should('be.visible');
@@ -104,7 +100,6 @@ describe('Rent a car', () => {
         cy.get('[data-cy="footer-icon-links"]').should('be.visible');
       });
     });
-
     describe('Home Page', () => {
       it('should show title and car rental details', () => {
         cy.get('[data-cy="home-title"]').should('be.visible').and('contain', 'Overview');
@@ -122,77 +117,123 @@ describe('Rent a car', () => {
 
   describe('Cars management', () => {
     describe('Car Table', () => {
-      beforeEach(() => {
-        cy.get('[data-cy="aside-car-button"]').click();
-        cy.get('[data-cy="car-dropdown-list"]').click();
-      });
-
-      it('should show the page table header', () => {
-        cy.url().should('include', '/car');
-
-        cy.get('[data-cy="header-list-container"]').should('be.visible');
-        cy.get('[data-cy="header-list-search"]').should('be.visible');
-        cy.get('[data-cy="header-list-search-label"]').contains('Search');
-        cy.get('[data-cy="header-list-search-input"]')
-          .invoke('attr', 'placeholder')
-          .should('contain', 'Search');
-        cy.get('[data-cy="header-list-add-car-btn"]')
-          .should('be.visible')
-          .and('contain', 'Add car');
-        cy.get('[data-cy="header-list-add-car-link"]')
-          .invoke('attr', 'href')
-          .should('contain', '/car/create');
-      });
-      it('should show a cars table ', () => {
-        cy.url().should('include', '/car');
-
-        const CARS_TABLE_HEAD_NAME = ['Brand', 'Model', 'Year', 'KMS', 'Price per day', 'Actions'];
-
-        cy.get('[data-cy="header-list-container"]').should('be.visible');
-        cy.get('[data-cy="cars-table-container"]').should('be.visible');
-
-        cy.get('[data-cy="cars-table-header"]').should('be.visible');
-        cy.get('[data-cy="cars-table-header-row"]')
-          .find('th')
-          .each((row, index) => {
-            cy.wrap(row).should('contain.text', CARS_TABLE_HEAD_NAME[index]);
-          });
-
-        cy.get('[data-cy="cars-table-body"]').should('be.visible');
-      });
-      describe('Modal', () => {
+      describe('With cars', () => {
         beforeEach(() => {
-          cy.get('[data-cy="row-actions-delete"]').eq(0).click();
+          cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as(
+            'getCars',
+          );
+          cy.get('[data-cy="aside-car-button"]').click();
+          cy.get('[data-cy="car-dropdown-list"]').click();
         });
-        it('when clicking delete should open a modal', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
-          cy.get('[data-cy="modal-btn-close"]').should('be.visible');
-          cy.get('[data-cy="modal-img"]').should('be.visible');
-          cy.get('[data-cy="modal-information"]')
+        it('should show the page table header', () => {
+          cy.url().should('include', '/car');
+
+          cy.get('[data-cy="header-list-container"]').should('be.visible');
+          cy.get('[data-cy="header-list-search"]').should('be.visible');
+          cy.get('[data-cy="header-list-search-label"]').contains('Search');
+          cy.get('[data-cy="header-list-search-input"]')
+            .invoke('attr', 'placeholder')
+            .should('contain', 'Search');
+          cy.get('[data-cy="header-list-add-car-btn"]')
             .should('be.visible')
-            .and('contain', 'Are you sure you want to delete this car?');
-          cy.get('[data-cy="modal-btn-confirm"]')
+            .and('contain', 'Add car');
+          cy.get('[data-cy="header-list-add-car-link"]')
+            .invoke('attr', 'href')
+            .should('contain', '/car/create');
+        });
+        it('should show a cars table', () => {
+          cy.url().should('include', '/car');
+
+          const CARS_TABLE_HEAD_NAME = [
+            'Brand',
+            'Model',
+            'Year',
+            'KMS',
+            'Price per day',
+            'Actions',
+          ];
+
+          cy.get('[data-cy="header-list-container"]').should('be.visible');
+          cy.get('[data-cy="cars-table-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="car-list-message-without-cars"]').should('not.exist');
+
+          cy.get('[data-cy="cars-table-header"]').should('be.visible');
+          cy.get('[data-cy="cars-table-header-row"]')
+            .find('th')
+            .each((row, index) => {
+              cy.wrap(row).should('contain.text', CARS_TABLE_HEAD_NAME[index]);
+            });
+
+          cy.get('[data-cy="cars-table-body"]').should('be.visible');
+        });
+        describe('Modal', () => {
+          beforeEach(() => {
+            cy.get('[data-cy="row-actions-delete"]').eq(0).click();
+          });
+          it('when clicking delete should open a modal', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+            cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+            cy.get('[data-cy="modal-img"]').should('be.visible');
+            cy.get('[data-cy="modal-information"]')
+              .should('be.visible')
+              .and('contain', 'Are you sure you want to delete this car?');
+            cy.get('[data-cy="modal-btn-confirm"]')
+              .should('be.visible')
+              .and('contain', "Yes, I'm sure");
+            cy.get('[data-cy="modal-btn-cancel"]')
+              .should('be.visible')
+              .and('contain', 'No, cancel');
+          });
+          it('when clicking outside the modal, should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking on the modal close should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-close"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking the button cancel should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-cancel"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+        });
+      });
+      describe('Without cars', () => {
+        beforeEach(() => {
+          cy.intercept('GET', `${URL_API_BASE}/cars`, {
+            body: [],
+          }).as('getCars');
+          cy.get('[data-cy="aside-car-button"]').click();
+          cy.get('[data-cy="car-dropdown-list"]').click();
+        });
+        it('should show the page table header', () => {
+          cy.url().should('include', '/car');
+
+          cy.get('[data-cy="header-list-container"]').should('be.visible');
+          cy.get('[data-cy="header-list-search"]').should('be.visible');
+          cy.get('[data-cy="header-list-search-label"]').contains('Search');
+          cy.get('[data-cy="header-list-search-input"]')
+            .invoke('attr', 'placeholder')
+            .should('contain', 'Search');
+          cy.get('[data-cy="header-list-add-car-btn"]')
             .should('be.visible')
-            .and('contain', "Yes, I'm sure");
-          cy.get('[data-cy="modal-btn-cancel"]').should('be.visible').and('contain', 'No, cancel');
+            .and('contain', 'Add car');
+          cy.get('[data-cy="header-list-add-car-link"]')
+            .invoke('attr', 'href')
+            .should('contain', '/car/create');
         });
-        it('when clicking outside the modal, should close it', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
-
-          cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
-          cy.get('[data-cy="modal-container"]').should('not.exist');
-        });
-        it('when clicking on the modal close should close it', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
-
-          cy.get('[data-cy="modal-btn-close"]').click();
-          cy.get('[data-cy="modal-container"]').should('not.exist');
-        });
-        it('when clicking the button cancel should close it', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
-
-          cy.get('[data-cy="modal-btn-cancel"]').click();
-          cy.get('[data-cy="modal-container"]').should('not.exist');
+        it('should show a message with no cars available', () => {
+          cy.get('[data-cy="cars-table-container"]').should('not.exist');
+          cy.get('[data-cy="car-list-message-without-cars"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'There are no cars loaded at this time');
         });
       });
     });
@@ -265,6 +306,7 @@ describe('Rent a car', () => {
 
     describe('Car Details', () => {
       beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}/cars`, { fixture: 'cars.json' }).as('getCars');
         cy.get('[data-cy="aside-car-button"]').click();
         cy.get('[data-cy="car-dropdown-list"]').click();
         cy.get('[data-cy="cars-table-row-link-view"]').eq(0).click();
