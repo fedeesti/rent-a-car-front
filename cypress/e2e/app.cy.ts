@@ -302,14 +302,52 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="add-car-btn-submit"]').should('contain', 'Add car').and('be.visible');
       });
+      it('should create a car successfully', () => {
+        const car = {
+          brand: 'Chevrolet',
+          model: 'Corsa',
+          color: 'Gris',
+          img: '/src/module/car/assets/images/chevrolet-corsa.jpg',
+          kms: '40000',
+          passengers: '5',
+          price: '8000',
+          year: '2010',
+          transmission: 'Manual',
+          airConditioner: true,
+        };
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="add-car-brand"] > input').type(car.brand);
+        cy.get('[data-cy="add-car-model"] > input').type(car.model);
+        cy.get('[data-cy="add-car-color"] > input').type(car.color);
+        cy.get('[data-cy="add-car-kms"] > input').type(car.kms);
+        cy.get('[data-cy="add-car-passengers"] > input').type(car.passengers);
+        cy.get('[data-cy="add-car-price"] > input').type(car.price);
+        cy.get('[data-cy="add-car-year"] > input').type(car.year);
+        cy.get('[data-cy="add-car-transmission"]').find('select').select(car.transmission);
+        cy.get('[data-cy="add-air-conditioner-input-true"]').check();
+        cy.get('[data-cy="add-car-update-logo"]')
+          .find('input')
+          .selectFile('cypress/fixtures/chevrolet-corsa.jpg', { force: true });
+
+        cy.intercept('POST', `${URL_API_BASE}${route.cars}`, { fixture: 'car.json' }).as(
+          'createCar',
+        );
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'cars.json' }).as(
+          'getCar',
+        );
+        cy.get('[data-cy="add-car-btn-submit"]').click();
+
+        cy.url().should('not.include', '/create');
+        cy.url().should('include', '/car');
+        cy.get('[data-cy="car-list-container"]').should('be.visible');
+      });
     });
 
     describe('Car Details', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as('getCars');
-        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' }).as(
-          'getCars',
-        );
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' }).as('getCar');
         cy.get('[data-cy="aside-car-button"]').click();
         cy.get('[data-cy="car-dropdown-list"]').click();
         cy.get('[data-cy="cars-table-row-link-view"]').eq(0).click();

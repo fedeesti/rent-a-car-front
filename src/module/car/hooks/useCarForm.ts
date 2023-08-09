@@ -1,9 +1,11 @@
-import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { formData } from '../../../assets/types/car.types';
+import { formData } from '../assets/types/car.types';
+import { CarService } from '../service';
+import { useNavigate } from 'react-router-dom';
 
 function useCarForm(formState: formData) {
   const [carFormData, setFormCarData] = useState<formData>(formState);
+  const navigate = useNavigate();
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,24 +25,22 @@ function useCarForm(formState: formData) {
     setFormCarData({ ...carFormData, img: file });
   };
 
-  const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitForm = async (e: FormEvent<HTMLFormElement>): Promise<string | undefined> => {
     e.preventDefault();
     try {
-      console.log(carFormData);
-
+      const service = new CarService();
       const formData = new FormData();
 
       Object.entries(carFormData).forEach(([key, value]) => {
         return formData.append(key, value);
       });
 
-      const response = await axios.post('http://localhost:3000/cars', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const { data } = await service.create(formData);
 
-      console.log(response.data);
+      if (data) {
+        navigate('/car');
+        return 'The car has been created successfully';
+      }
     } catch (error) {
       console.log('Error submitting the form: ', error);
     }

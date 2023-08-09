@@ -32,7 +32,7 @@ export class CarService {
     try {
       const response = await axios.post(`${URL_API_BASE}${BASE_ROUTE}`, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -48,6 +48,7 @@ export class CarService {
 
       return response;
     } catch (error) {
+      console.log(error);
       throw new Error('Error in updating the car');
     }
   }

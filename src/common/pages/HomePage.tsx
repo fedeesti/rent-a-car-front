@@ -1,18 +1,4 @@
-import { useEffect } from 'react';
-import { CarService } from '../../module/car/service';
-
 function HomePage() {
-  async function fetchData() {
-    const carService = new CarService();
-    const cars = await carService.getAll();
-
-    console.log(cars);
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="h-screen p-4 sm:ml-56">
       <div className="p-4 rounded-lg mt-14">
