@@ -1,7 +1,7 @@
 import { Car } from '../../assets/types/car.types';
 import CarRow from './CarRow';
 
-function Table({ cars }: { cars: Car[] }): JSX.Element {
+function Table({ cars }: { cars: Car[] | undefined }): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm text-left text-gray-500" data-cy="cars-table-container">
@@ -28,9 +28,7 @@ function Table({ cars }: { cars: Car[] }): JSX.Element {
           </tr>
         </thead>
         <tbody data-cy="cars-table-body">
-          {cars.map((car: Car) => (
-            <CarRow key={car.id} car={car} />
-          ))}
+          {cars?.map((car: Car) => <CarRow key={car.id} car={car} />)}
         </tbody>
       </table>
     </div>
