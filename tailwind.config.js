@@ -18,6 +18,10 @@ export default {
     gridTemplateColumns: {
       'card-responsive': 'repeat(auto-fit, minmax(250px, 1fr))',
     },
+    translate: {
+      '50-negative': '-50%',
+      '20-negative': '-20%',
+    },
   },
   plugins: [],
 };
