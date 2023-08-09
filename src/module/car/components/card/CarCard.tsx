@@ -146,6 +146,7 @@ function CarCard({ car }: PropTypes): JSX.Element {
       {showModal && (
         <Modal
           logo={car ? car.img : ''}
+          id={car?.id ? car.id : 1}
           name={`${car?.brand}-${car?.model}`}
           onClose={closeModal}
         />

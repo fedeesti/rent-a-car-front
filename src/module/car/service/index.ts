@@ -53,9 +53,9 @@ export class CarService {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
     try {
-      const response = await axios.delete(`${URL_API_BASE}/${id}`);
+      const response = await axios.delete(`${URL_API_BASE}${BASE_ROUTE}/${id}`);
       return response;
     } catch (error) {
       throw new Error('Error in deleting  the car');

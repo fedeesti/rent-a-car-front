@@ -432,9 +432,42 @@ describe('Rent a car', () => {
         });
       });
     });
+
+    describe.only('Delete car', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as(
+          'getCarsThreeLength',
+        );
+        cy.get('[data-cy="aside-car-button"]').click();
+        cy.get('[data-cy="car-dropdown-list"]').click();
+      });
+      it('when deleting a car from the table, should delete successfully', () => {
+        cy.get('[data-cy="car-row-table"]').should('have.length', 3);
+        cy.get('[data-cy="row-actions-delete"]').eq(0).click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' });
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars-two-length.json' }).as(
+          'getCarsTwoLength',
+        );
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="car-row-table"]').should('have.length', 2);
+      });
+      it('when deleting a car from the Car card, should delete it successfully', () => {
+        cy.get('[data-cy="car-row-table"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' }).as('getCar');
+        cy.get('[data-cy="cars-table-row-link-view"]').eq(0).click();
+        cy.get('[data-cy="car-card-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' });
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars-two-length.json' }).as(
+          'getCarsTwoLength',
+        );
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="car-row-table"]').should('have.length', 2);
+      });
+    });
   });
 });
-
-// cy.get('[data-cy=""]');
-// cy.get('[data-cy=""]');
-// cy.get('[data-cy=""]');

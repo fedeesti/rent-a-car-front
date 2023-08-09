@@ -7,7 +7,7 @@ function CarRow({ car }: { car: Car }): JSX.Element {
   const { showModal, openModal, closeModal } = useCarModal();
 
   return (
-    <tr className="border-b dark:border-gray-700">
+    <tr className="border-b dark:border-gray-700" data-cy="car-row-table">
       <th
         scope="row"
         className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -79,7 +79,12 @@ function CarRow({ car }: { car: Car }): JSX.Element {
           </div>
         </div>
         {showModal && (
-          <Modal logo={car.img} name={`${car.brand}-${car.model}`} onClose={closeModal} />
+          <Modal
+            logo={car.img}
+            id={car.id}
+            name={`${car.brand}-${car.model}`}
+            onClose={closeModal}
+          />
         )}
       </td>
     </tr>

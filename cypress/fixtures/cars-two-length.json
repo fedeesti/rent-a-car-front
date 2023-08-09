@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "brand": "Chevrolet",
+    "model": "Corsa",
+    "color": "Gris",
+    "img": "/src/module/car/assets/images/chevrolet-corsa.jpg",
+    "kms": 40000,
+    "passengers": 5,
+    "price": 8000,
+    "year": 2010,
+    "transmission": "manual",
+    "airConditioner": true
+  },
+  {
+    "id": 2,
+    "brand": "Fiat",
+    "model": "Cronos",
+    "color": "Gris oscuro",
+    "img": "/src/module/car/assets/images/fiat-cronos.jpg",
+    "kms": 5000,
+    "passengers": 5,
+    "price": 12000,
+    "year": 2021,
+    "transmission": "manual",
+    "airConditioner": true
+  }
+]
