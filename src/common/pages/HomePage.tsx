@@ -1,4 +1,18 @@
+import { useEffect } from 'react';
+import { CarService } from '../../module/car/service';
+
 function HomePage() {
+  async function fetchData() {
+    const carService = new CarService();
+    const cars = await carService.getAll();
+
+    console.log(cars);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="h-screen p-4 sm:ml-56">
       <div className="p-4 rounded-lg mt-14">
@@ -19,11 +33,11 @@ function HomePage() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="#14B8A6"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
                   />
                 </svg>
@@ -37,11 +51,11 @@ function HomePage() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="#14B8A6"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                   />
                 </svg>
@@ -64,11 +78,11 @@ function HomePage() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="#14B8A6"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
                   />
                 </svg>
@@ -82,11 +96,11 @@ function HomePage() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="#14B8A6"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                   />
                 </svg>
@@ -112,11 +126,11 @@ function HomePage() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="#14B8A6"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
                   />
                 </svg>
@@ -130,11 +144,11 @@ function HomePage() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="#14B8A6"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
                   />
                 </svg>
