@@ -1,19 +1,13 @@
+import { formData } from '../../types/car.types';
 import useCarForm from '../../hooks/useCarForm';
 
-function CarForm() {
+interface IProps {
+  initialState: formData;
+}
+
+function CarForm({ initialState }: IProps) {
   const { carFormData, onChangeInput, onChangeSelect, handleImageChange, onSubmitForm } =
-    useCarForm({
-      brand: '',
-      model: '',
-      color: '',
-      img: null,
-      kms: '',
-      passengers: '',
-      price: '',
-      year: '',
-      transmission: '',
-      airConditioner: '',
-    });
+    useCarForm(initialState);
 
   return (
     <form action="" method="post" onSubmit={onSubmitForm} data-cy="add-car-form-container">
@@ -29,9 +23,10 @@ function CarForm() {
             type="text"
             name="brand"
             id="brand"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type brand name"
+            value={carFormData.brand}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div className="w-full" data-cy="add-car-model">
@@ -45,9 +40,10 @@ function CarForm() {
             type="text"
             name="model"
             id="model"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type model"
+            value={carFormData.model}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div className="w-full" data-cy="add-car-color">
@@ -61,9 +57,10 @@ function CarForm() {
             type="text"
             name="color"
             id="color"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type color"
+            value={carFormData.color}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div data-cy="add-car-kms">
@@ -77,9 +74,10 @@ function CarForm() {
             type="text"
             name="kms"
             id="kms"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="12"
+            value={carFormData.kms}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div data-cy="add-car-passengers">
@@ -93,9 +91,10 @@ function CarForm() {
             type="text"
             name="passengers"
             id="passengers"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="4"
+            value={carFormData.passengers}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div className="w-full" data-cy="add-car-price">
@@ -109,9 +108,10 @@ function CarForm() {
             type="text"
             name="price"
             id="price"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="$2999"
+            value={carFormData.price}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div className="w-full" data-cy="add-car-year">
@@ -125,9 +125,10 @@ function CarForm() {
             type="text"
             name="year"
             id="year"
-            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="1999"
+            value={carFormData.year}
             onChange={onChangeInput}
+            className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
           />
         </div>
         <div data-cy="add-car-transmission">
@@ -140,12 +141,13 @@ function CarForm() {
           <select
             id="transmission"
             name="transmission"
+            value={carFormData.transmission}
             onChange={onChangeSelect}
             className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
           >
             <option value="">Select Transmission</option>
             <option value="manual">Manual</option>
-            <option value="automático">Automático</option>
+            <option value="automatic">Automatic</option>
           </select>
         </div>
         <div data-cy="add-car-air-conditioner">
@@ -198,7 +200,7 @@ function CarForm() {
         className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-dark-green rounded-lg hover:bg-light-green"
         data-cy="add-car-btn-submit"
       >
-        Add car
+        Add Car
       </button>
     </form>
   );

@@ -1,4 +1,5 @@
 import CarForm from '../components/form/CarForm';
+import { INITIAL_STATE } from '../utils/constants';
 
 function AddCar() {
   return (
@@ -7,7 +8,7 @@ function AddCar() {
         <h2 className="mb-4 text-xl font-bold text-gray-900" data-cy="add-car-title">
           Add a new car
         </h2>
-        <CarForm />
+        <CarForm initialState={INITIAL_STATE} />
       </section>
     </main>
   );
