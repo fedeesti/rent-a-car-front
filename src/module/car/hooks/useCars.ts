@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CarService } from '../service';
-import { Car } from '../assets/types/car.types';
+import { Car } from '../types/car.types';
 
 function useCars(): { cars: Car[] | undefined } {
   const [cars, setCars] = useState<Car[] | undefined>();

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Car } from '../../assets/types/car.types';
+import { Car } from '../../types/car.types';
 import Modal from '../modal/Modal';
 import useCarModal from '../../hooks/useCarModal';
 

@@ -1,4 +1,4 @@
-import { Car } from '../../assets/types/car.types';
+import { Car } from '../../types/car.types';
 import CarRow from './CarRow';
 
 function Table({ cars }: { cars: Car[] | undefined }): JSX.Element {

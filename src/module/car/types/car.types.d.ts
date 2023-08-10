@@ -13,10 +13,11 @@ export interface Car {
 }
 
 export interface formData {
+  id?: number;
   brand: string;
   model: string;
   color: string;
-  img: File | null;
+  img: File | string;
   kms: string;
   passengers: string;
   price: string;

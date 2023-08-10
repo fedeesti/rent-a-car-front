@@ -1,4 +1,4 @@
-import { Car } from '../assets/types/car.types';
+import { Car } from '../types/car.types';
 import Header from '../components/table/Header';
 import Table from '../components/table/Table';
 import useCars from '../hooks/useCars';
