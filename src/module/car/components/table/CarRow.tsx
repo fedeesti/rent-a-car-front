@@ -44,7 +44,7 @@ function CarRow({ car }: { car: Car }): JSX.Element {
             </Link>
           </div>
           <div className="w-4 mr-2 hover:text-dark-green hover:scale-125">
-            <Link to={`/car/${car.id}/edit`} data-cy="row-actions-mobile-icons-edit">
+            <Link to={`/car/${car.id}/edit`} data-cy="cars-table-row-link-edit">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

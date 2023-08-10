@@ -195,13 +195,47 @@ function CarForm({ initialState }: IProps) {
           />
         </div>
       </div>
-      <button
-        type="submit"
-        className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-dark-green rounded-lg hover:bg-light-green"
-        data-cy="add-car-btn-submit"
-      >
-        Add Car
-      </button>
+      {initialState.id ? (
+        <div
+          className="flex items-center justify-between space-x-4 px-6 pt-8"
+          data-cy="car-card-btn-container"
+        >
+          <button
+            type="submit"
+            className="text-white bg-dark-green select-none font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+            data-cy="car-form-btn-update"
+          >
+            Update car
+          </button>
+          <button
+            type="button"
+            className="text-red-600 bg-gray-100 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-cy="car-form-btn-delete"
+          >
+            <svg
+              className="w-5 h-5 mr-1 -ml-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            Delete
+          </button>
+        </div>
+      ) : (
+        <button
+          type="submit"
+          className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-dark-green rounded-lg hover:bg-light-green"
+          data-cy="add-car-btn-submit"
+        >
+          Add Car
+        </button>
+      )}
     </form>
   );
 }

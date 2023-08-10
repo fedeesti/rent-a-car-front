@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { Car } from '../assets/types/car.types';
+import { Car } from '../types/car.types';
 import { apiToEntity } from '../mapper';
 
 const URL_API_BASE = import.meta.env.VITE_URL_API_BASE;
@@ -42,9 +42,9 @@ export class CarService {
     }
   }
 
-  async update(id: string, formData: FormData): Promise<AxiosResponse<Car>> {
+  async update(id: number, formData: FormData): Promise<AxiosResponse<Car>> {
     try {
-      const response = await axios.patch(`${URL_API_BASE}/${id}`, formData);
+      const response = await axios.patch(`${URL_API_BASE}${BASE_ROUTE}/${id}`, formData);
 
       return response;
     } catch (error) {

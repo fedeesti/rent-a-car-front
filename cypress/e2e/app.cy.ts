@@ -433,7 +433,106 @@ describe('Rent a car', () => {
       });
     });
 
-    describe.only('Delete car', () => {
+    describe.only('Edit car', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as('getCars');
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1/edit`, { fixture: 'car.json' }).as(
+          'getCar',
+        );
+        cy.get('[data-cy="aside-car-button"]').click();
+        cy.get('[data-cy="car-dropdown-list"]').click();
+        cy.get('[data-cy="cars-table-row-link-edit"]').eq(0).click();
+      });
+      it('should show a form to edit a car', () => {
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="add-car-container"]').should('be.visible');
+        cy.get('[data-cy="edit-car-title"]').contains('Edit a car');
+        cy.get('[data-cy="add-car-form-container"]').should('be.visible');
+
+        cy.get('[data-cy="add-car-brand"] > label').contains('Brand Name');
+        cy.get('[data-cy="add-car-brand"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-model"] > label').contains('Model');
+        cy.get('[data-cy="add-car-model"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-color"] > label').contains('Color');
+        cy.get('[data-cy="add-car-color"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-kms"] > label').contains('Kilometres');
+        cy.get('[data-cy="add-car-kms"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-passengers"] > label').contains('Passengers');
+        cy.get('[data-cy="add-car-passengers"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-price"] > label').contains('Price');
+        cy.get('[data-cy="add-car-price"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-year"] > label').contains('Year');
+        cy.get('[data-cy="add-car-year"] > input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="add-car-transmission"] > label').contains('Transmission');
+
+        cy.get('[data-cy="add-car-air-conditioner"] > h3').contains('Air Conditioner');
+        cy.get('[data-cy="add-air-conditioner-input-container"]').should('be.visible');
+        cy.get('[data-cy="add-air-conditioner-input-true"]')
+          .invoke('val')
+          .should('contain', 'true');
+        cy.get('[data-cy="add-air-conditioner-input-false"]')
+          .invoke('val')
+          .should('contain', 'false');
+
+        cy.get('[data-cy="add-car-update-logo"] > label').contains('Upload logo');
+        cy.get('[data-cy="add-car-update-logo"] > input').should('be.visible');
+
+        cy.get('[data-cy="car-form-btn-update"]').should('contain', 'Update car').and('be.visible');
+        cy.get('[data-cy="car-form-btn-delete"]').should('contain', 'Delete').and('be.visible');
+      });
+      it('should update a car successfully', () => {
+        const newData = {
+          brand: 'chevrolet',
+          model: 'corsa',
+          color: 'black',
+        };
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="add-car-brand"] > input').clear();
+        cy.get('[data-cy="add-car-model"] > input').clear();
+        cy.get('[data-cy="add-car-color"] > input').clear();
+
+        cy.get('[data-cy="add-car-brand"] > input').type(newData.brand);
+        cy.get('[data-cy="add-car-model"] > input').type(newData.model);
+        cy.get('[data-cy="add-car-color"] > input').type(newData.color);
+
+        cy.intercept('PATCH', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' }).as(
+          'createCar',
+        );
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'cars.json' }).as(
+          'getCar',
+        );
+        cy.get('[data-cy="car-form-btn-update"]').click();
+
+        cy.url().should('not.include', '/edit');
+        cy.url().should('include', '/car');
+        cy.get('[data-cy="car-list-container"]').should('be.visible');
+      });
+    });
+
+    describe('Delete car', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as(
           'getCarsThreeLength',
