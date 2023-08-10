@@ -8,7 +8,7 @@ function SideBar(): JSX.Element {
 
   return (
     <aside
-      className="fixed top-0 left-0 w-56 h-screen pt-20 transition-transform -translate-x-full bg-dark-green sm:translate-x-0"
+      className="fixed top-0 left-0 w-56 h-screen pt-20 transition-transform -translate-x-full bg-dark-green sm:translate-x-0 z-10 hidden sm:block"
       data-cy="aside-container"
     >
       <div className="h-full px-3 pb-4 overflow-y-auto bg-dark-green dark:bg-gray-800 text-white">
