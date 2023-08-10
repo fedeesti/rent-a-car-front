@@ -1,11 +1,14 @@
 import { formData } from '../../types/car.types';
 import useCarForm from '../../hooks/useCarForm';
+import useCarModal from '../../hooks/useCarModal';
+import Modal from '../modal/Modal';
 
 interface IProps {
   initialState: formData;
 }
 
 function CarForm({ initialState }: IProps) {
+  const { showModal, openModal, closeModal } = useCarModal();
   const { carFormData, onChangeInput, onChangeSelect, handleImageChange, onSubmitForm } =
     useCarForm(initialState);
 
@@ -209,6 +212,7 @@ function CarForm({ initialState }: IProps) {
           </button>
           <button
             type="button"
+            onClick={openModal}
             className="text-red-600 bg-gray-100 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             data-cy="car-form-btn-delete"
           >
@@ -235,6 +239,14 @@ function CarForm({ initialState }: IProps) {
         >
           Add Car
         </button>
+      )}
+      {showModal && (
+        <Modal
+          logo={initialState.img as string}
+          id={initialState?.id as number}
+          name={`${initialState.brand}-${initialState.model}`}
+          onClose={closeModal}
+        />
       )}
     </form>
   );

@@ -11,7 +11,7 @@ function useDeleteCar(id: number) {
 
       await service.delete(id);
 
-      if (pathname.includes('view')) {
+      if (pathname.includes('view') || pathname.includes('edit')) {
         navigate('/car');
       } else {
         navigate(0);

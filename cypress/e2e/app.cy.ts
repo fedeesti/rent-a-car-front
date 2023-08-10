@@ -300,7 +300,7 @@ describe('Rent a car', () => {
         cy.get('[data-cy="add-car-update-logo"] > label').contains('Upload logo');
         cy.get('[data-cy="add-car-update-logo"] > input').should('be.visible');
 
-        cy.get('[data-cy="add-car-btn-submit"]').should('contain', 'Add car').and('be.visible');
+        cy.get('[data-cy="add-car-btn-submit"]').should('contain', 'Add Car').and('be.visible');
       });
       it('should create a car successfully', () => {
         const car = {
@@ -433,7 +433,7 @@ describe('Rent a car', () => {
       });
     });
 
-    describe.only('Edit car', () => {
+    describe('Edit car', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' }).as('getCars');
         cy.intercept('GET', `${URL_API_BASE}${route.cars}/1/edit`, { fixture: 'car.json' }).as(
@@ -558,6 +558,23 @@ describe('Rent a car', () => {
         cy.intercept('GET', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' }).as('getCar');
         cy.get('[data-cy="cars-table-row-link-view"]').eq(0).click();
         cy.get('[data-cy="car-card-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' });
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars-two-length.json' }).as(
+          'getCarsTwoLength',
+        );
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="car-row-table"]').should('have.length', 2);
+      });
+      it('when deleting a car from the form edit car, should delete it successfully', () => {
+        cy.get('[data-cy="car-row-table"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}/1/edit`, { fixture: 'car.json' }).as(
+          'getCar',
+        );
+        cy.get('[data-cy="cars-table-row-link-edit"]').eq(0).click();
+        cy.get('[data-cy="car-form-btn-delete"]').click();
 
         cy.intercept('DELETE', `${URL_API_BASE}${route.cars}/1`, { fixture: 'car.json' });
         cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars-two-length.json' }).as(
