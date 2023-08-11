@@ -3,20 +3,11 @@ import { Client } from '../../types/client';
 import Modal from '../modal/Modal';
 import useClientModal from '../../hooks/useClientModal';
 
-const client: Client = {
-  id: 1,
-  name: 'Javier',
-  lastname: 'Milei',
-  docType: 'DNI',
-  docNumber: '12345678',
-  nationality: 'Argentina',
-  address: 'Av. Libertador 1234, Capital Federal',
-  phone: '1122334455',
-  email: 'javier.milei@gmail.com',
-  birthdate: '01/10/1960',
-};
+interface IProps {
+  client: Client | undefined;
+}
 
-function CardClient() {
+function CardClient({ client }: IProps) {
   const { showModal, openModal, closeModal } = useClientModal();
   return (
     <div
@@ -31,7 +22,7 @@ function CardClient() {
           className="text-xl font-bold leading-none text-gray-900"
           data-cy="card-client-header-title"
         >
-          {client.name} {client.lastname}
+          {client?.name} {client?.lastname}
         </h5>
         <Link
           to="/client"
@@ -54,14 +45,14 @@ function CardClient() {
                   className="inline-flex items-center text-base font-semibold text-gray-900"
                   data-cy="card-client-doc-type"
                 >
-                  {client.docType}
+                  {client?.docType}
                 </p>
               </div>
               <div
                 className="text-base font-medium text-gray-500 truncate"
                 data-cy="card-client-doc-number"
               >
-                {client.docNumber}
+                {client?.docNumber}
               </div>
             </div>
           </li>
@@ -72,7 +63,9 @@ function CardClient() {
                   Birthdate
                 </p>
               </div>
-              <div className="text-base font-medium text-gray-500 truncate">{client.birthdate}</div>
+              <div className="text-base font-medium text-gray-500 truncate">
+                {client?.birthdate}
+              </div>
             </div>
           </li>
           <li className="py-3 sm:py-4" data-cy="card-client-nationality">
@@ -83,7 +76,7 @@ function CardClient() {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {client.nationality}
+                {client?.nationality}
               </div>
             </div>
           </li>
@@ -94,7 +87,7 @@ function CardClient() {
                   Phone
                 </p>
               </div>
-              <div className="text-base font-medium text-gray-500 truncate">{client.phone}</div>
+              <div className="text-base font-medium text-gray-500 truncate">{client?.phone}</div>
             </div>
           </li>
           <li className="py-3 sm:py-4" data-cy="card-client-email">
@@ -104,7 +97,7 @@ function CardClient() {
                   Email
                 </p>
               </div>
-              <div className="text-base font-medium text-gray-500 truncate">{client.email}</div>
+              <div className="text-base font-medium text-gray-500 truncate">{client?.email}</div>
             </div>
           </li>
           <li className="py-3 sm:py-4" data-cy="card-client-address">
@@ -114,7 +107,7 @@ function CardClient() {
                   Address
                 </p>
               </div>
-              <div className="text-base font-medium text-gray-500 truncate">{client.address}</div>
+              <div className="text-base font-medium text-gray-500 truncate">{client?.address}</div>
             </div>
           </li>
         </ul>
@@ -128,7 +121,7 @@ function CardClient() {
           className="text-white bg-dark-green select-none font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           data-cy="card-client-btn-edit"
         >
-          <Link to={`/client/${client.id}/edit`}>Edit client</Link>
+          <Link to={`/client/${client?.id}/edit`}>Edit client</Link>
         </button>
         <button
           type="button"
@@ -151,7 +144,7 @@ function CardClient() {
           Delete
         </button>
       </div>
-      {showModal && <Modal fullname={`${client.name} ${client.lastname}`} onClose={closeModal} />}
+      {showModal && <Modal fullname={`${client?.name} ${client?.lastname}`} onClose={closeModal} />}
     </div>
   );
 }

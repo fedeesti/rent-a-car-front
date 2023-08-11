@@ -588,7 +588,7 @@ describe('Rent a car', () => {
   });
 
   describe('Clients management', () => {
-    describe.only('Client List page', () => {
+    describe('Client List page', () => {
       describe('With clients', () => {
         beforeEach(() => {
           cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
@@ -867,8 +867,14 @@ describe('Rent a car', () => {
           .contains('Delete');
       });
     });
-    describe('View client', () => {
+    describe.only('View client', () => {
       beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/three-clients.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
         cy.get('[data-cy="aside-client-btn"]').click();
         cy.get('[data-cy="dropdown-client-list"]').click();
         cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
@@ -943,4 +949,3 @@ describe('Rent a car', () => {
     });
   });
 });
-//  cy.get('[]').should('exist').and('be.visible');

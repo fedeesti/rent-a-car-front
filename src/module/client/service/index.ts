@@ -14,4 +14,14 @@ export class ClientService {
       throw new Error('Failed while fetching clients');
     }
   }
+
+  async getById(id: string | undefined): Promise<Client> {
+    try {
+      const { data } = await axios.get(`${URL_API_BASE}${BASE_ROUTE}/${id}`);
+
+      return data;
+    } catch (error) {
+      throw new Error('Failed while fetching clients');
+    }
+  }
 }
