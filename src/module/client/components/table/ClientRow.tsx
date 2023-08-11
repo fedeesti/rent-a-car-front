@@ -50,7 +50,7 @@ function ClientRow({ client }: IProps) {
             </Link>
           </div>
           <div className="w-4 mr-2 hover:text-dark-green hover:scale-125">
-            <Link to="#" data-cy="tbody-row-actions-edit">
+            <Link to={`/client/${client.id}/edit`} data-cy="tbody-row-actions-edit">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

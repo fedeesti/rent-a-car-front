@@ -1,4 +1,17 @@
 import ClientForm from '../components/form/ClientForm';
+import { Client } from '../types/client';
+
+const INITIAL_VALUES: Client = {
+  name: '',
+  lastname: '',
+  docType: '',
+  docNumber: '',
+  nationality: '',
+  address: '',
+  phone: '',
+  email: '',
+  birthdate: '',
+};
 
 function AddClient() {
   return (
@@ -8,7 +21,7 @@ function AddClient() {
           <h2 className="mb-4 text-xl font-bold text-gray-900" data-cy="create-client-title">
             Add a new client
           </h2>
-          <ClientForm />
+          <ClientForm initialState={INITIAL_VALUES} />
         </div>
       </section>
     </main>

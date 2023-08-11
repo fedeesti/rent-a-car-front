@@ -588,7 +588,7 @@ describe('Rent a car', () => {
   });
 
   describe.only('Clients management', () => {
-    describe('Car List page', () => {
+    describe('Client List page', () => {
       beforeEach(() => {
         cy.get('[data-cy="aside-client-btn"]').click();
         cy.get('[data-cy="dropdown-client-list"]').click();
@@ -659,6 +659,7 @@ describe('Rent a car', () => {
           .should('exist')
           .and('be.visible')
           .and('contain', 'Add Client');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
       });
       it('should show the create client page from the client list page', () => {
         cy.get('[data-cy="dropdown-client-list"]').click();
@@ -675,6 +676,7 @@ describe('Rent a car', () => {
           .should('exist')
           .and('be.visible')
           .and('contain', 'Add Client');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
       });
       it('should show the create client form', () => {
         cy.get('[data-cy="dropdown-client-add"]').click();
@@ -735,6 +737,80 @@ describe('Rent a car', () => {
           .should('exist')
           .and('be.visible')
           .and('contain', 'Add Client');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
+      });
+    });
+    describe('Edit client', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-client-btn"]').click();
+        cy.get('[data-cy="dropdown-client-list"]').click();
+        cy.url().should('include', '/client');
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.url().should('include', '/edit');
+      });
+      it('should show the form to update a client', () => {
+        cy.get('[data-cy="edit-client-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="edit-client-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Edit client');
+
+        cy.get('[data-cy="client-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="client-form-first-name"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-first-name"]').find('label').contains('First name');
+        cy.get('[data-cy="client-form-first-name"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-last-name"]').find('label').contains('Last name');
+        cy.get('[data-cy="client-form-last-name"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-nationality"]').find('label').contains('Nationality');
+
+        cy.get('[data-cy="client-form-doc-type"]').find('label').contains('Document Type');
+
+        cy.get('[data-cy="client-form-doc-number"]').find('label').contains('Document Number');
+        cy.get('[data-cy="client-form-doc-number"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-address"]').find('label').contains('Address');
+        cy.get('[data-cy="client-form-address"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-phone"]').find('label').contains('Phone');
+        cy.get('[data-cy="client-form-phone"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-email"]').find('label').contains('Email');
+        cy.get('[data-cy="client-form-email"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-birthdate"]').find('label').contains('Birthdate');
+
+        cy.get('[data-cy="client-form-btn-add"]').should('not.exist');
+
+        cy.get('[data-cy="client-form-btn-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-btn-update"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Update client');
+        cy.get('[data-cy="client-form-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
       });
     });
   });

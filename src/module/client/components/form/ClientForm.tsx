@@ -1,31 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { Client } from '../../types/client';
 
-interface IFormData {
-  name: string;
-  lastname: string;
-  docType: string;
-  docNumber: string;
-  nationality: string;
-  address: string;
-  phone: string;
-  email: string;
-  birthdate: string;
+interface IProps {
+  initialState: Client;
 }
 
-const INITIAL_VALUES: IFormData = {
-  name: '',
-  lastname: '',
-  docType: '',
-  docNumber: '',
-  nationality: '',
-  address: '',
-  phone: '',
-  email: '',
-  birthdate: '',
-};
-
-function ClientForm() {
-  const [clientFormData, setClientFormData] = useState<IFormData>(INITIAL_VALUES);
+function ClientForm({ initialState }: IProps) {
+  const [clientFormData, setClientFormData] = useState<Client>(initialState);
+  const { id } = initialState;
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,7 +24,11 @@ function ClientForm() {
   const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log('The client has been created successfully', clientFormData);
+      let status: string;
+
+      status = id ? 'updated' : 'created';
+
+      console.log(`The client has been ${status} successfully`, clientFormData);
     } catch (error) {
       console.log('Error submitting the form: ', error);
     }
@@ -64,6 +50,7 @@ function ClientForm() {
             id="name"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             placeholder="Type name"
+            value={clientFormData.name}
             onChange={onChangeInput}
           />
         </div>
@@ -80,6 +67,7 @@ function ClientForm() {
             id="lastname"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type last name"
+            value={clientFormData.lastname}
             onChange={onChangeInput}
           />
         </div>
@@ -93,6 +81,7 @@ function ClientForm() {
           <select
             id="nationality"
             name="nationality"
+            value={clientFormData.nationality}
             onChange={onChangeSelect}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
           >
@@ -119,6 +108,7 @@ function ClientForm() {
           <select
             id="docType"
             name="docType"
+            value={clientFormData.docType}
             onChange={onChangeSelect}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
           >
@@ -139,6 +129,7 @@ function ClientForm() {
             id="docNumber"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type Document Number"
+            value={clientFormData.docNumber}
             onChange={onChangeInput}
           />
         </div>
@@ -155,6 +146,7 @@ function ClientForm() {
             id="address"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type address"
+            value={clientFormData.address}
             onChange={onChangeInput}
           />
         </div>
@@ -171,6 +163,7 @@ function ClientForm() {
             id="phone"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="Type phone"
+            value={clientFormData.phone}
             onChange={onChangeInput}
           />
         </div>
@@ -187,6 +180,7 @@ function ClientForm() {
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             placeholder="example@email.com"
+            value={clientFormData.email}
             onChange={onChangeInput}
           />
         </div>
@@ -202,17 +196,52 @@ function ClientForm() {
             name="birthdate"
             id="birthdate"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+            value={clientFormData.birthdate.split('/').reverse().join('-')}
             onChange={onChangeInput}
           />
         </div>
       </div>
-      <button
-        type="submit"
-        data-cy="client-form-btn-add"
-        className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-dark-green rounded-lg  shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-      >
-        Add Client
-      </button>
+      {id ? (
+        <div
+          className="flex items-center justify-between space-x-4 px-6 pt-8"
+          data-cy="client-form-btn-container"
+        >
+          <button
+            type="submit"
+            className="text-white bg-dark-green select-none font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+            data-cy="client-form-btn-update"
+          >
+            Update client
+          </button>
+          <button
+            type="button"
+            className="text-red-600 bg-gray-100 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-cy="client-form-btn-delete"
+          >
+            <svg
+              className="w-5 h-5 mr-1 -ml-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            Delete
+          </button>
+        </div>
+      ) : (
+        <button
+          type="submit"
+          data-cy="client-form-btn-add"
+          className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-dark-green rounded-lg  shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+        >
+          Add Client
+        </button>
+      )}
     </form>
   );
 }
