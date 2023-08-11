@@ -87,7 +87,13 @@ function ClientRow({ client }: IProps) {
             </button>
           </div>
         </div>
-        {showModal && <Modal fullname={`${client.name} ${client.lastname}`} onClose={closeModal} />}
+        {showModal && (
+          <Modal
+            id={client.id}
+            fullname={`${client.name} ${client.lastname}`}
+            onClose={closeModal}
+          />
+        )}
       </td>
     </tr>
   );

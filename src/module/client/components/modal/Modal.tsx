@@ -1,9 +1,13 @@
+import useDeleteClient from '../../hooks/useDeleteClient';
+
 interface IProps {
+  id: number | undefined;
   fullname: string;
   onClose: () => void;
 }
 
-function Modal({ fullname, onClose }: IProps) {
+function Modal({ id, fullname, onClose }: IProps) {
+  const { onDelete } = useDeleteClient(id);
   return (
     <div className="flex flex-col items-center justify-center" onClick={onClose}>
       <div
@@ -61,6 +65,7 @@ function Modal({ fullname, onClose }: IProps) {
               <button
                 type="button"
                 data-cy="modal-btn-confirm"
+                onClick={onDelete}
                 className="text-white bg-red-600 select-none focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               >
                 Yes, I'm sure

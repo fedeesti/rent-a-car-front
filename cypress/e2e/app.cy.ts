@@ -867,7 +867,7 @@ describe('Rent a car', () => {
           .contains('Delete');
       });
     });
-    describe.only('View client', () => {
+    describe('View client', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
           fixture: './client/three-clients.json',
@@ -945,6 +945,48 @@ describe('Rent a car', () => {
           cy.get('[data-cy="modal-btn-cancel"]').click();
           cy.get('[data-cy="modal-container"]').should('not.exist');
         });
+      });
+    });
+    describe.only('Delete client', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/three-clients.json',
+        });
+        cy.get('[data-cy="aside-client-btn"]').click();
+        cy.get('[data-cy="dropdown-client-list"]').click();
+      });
+      it('when deleting a client from the table, should delete successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+        cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/two-clients.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+      it('when deleting a car from the Car card, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.get('[data-cy="card-client-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/two-clients.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
     });
   });

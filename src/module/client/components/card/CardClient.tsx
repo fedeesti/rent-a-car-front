@@ -144,7 +144,13 @@ function CardClient({ client }: IProps) {
           Delete
         </button>
       </div>
-      {showModal && <Modal fullname={`${client?.name} ${client?.lastname}`} onClose={closeModal} />}
+      {showModal && (
+        <Modal
+          id={client?.id}
+          fullname={`${client?.name} ${client?.lastname}`}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }
