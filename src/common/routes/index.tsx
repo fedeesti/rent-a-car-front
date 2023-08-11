@@ -7,6 +7,7 @@ import EditCar from '../../module/car/pages/EditCar';
 import ClientList from '../../module/client/pages/ClientList';
 import AddClient from '../../module/client/pages/AddClient';
 import EditClient from '../../module/client/pages/EditClient';
+import ViewClient from '../../module/client/pages/ViewClient';
 
 function AppRoutes(): JSX.Element {
   return (
@@ -19,6 +20,7 @@ function AppRoutes(): JSX.Element {
       <Route path="/client">
         <Route index element={<ClientList />} />
         <Route path="create" element={<AddClient />} />
+        <Route path=":clientId/view" element={<ViewClient />} />
         <Route path=":clientId/edit" element={<EditClient />} />
       </Route>
     </Routes>

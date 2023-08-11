@@ -27,7 +27,7 @@ function ClientRow({ client }: IProps) {
       <td className="px-6 py-4">
         <div className="flex item-center justify-center" data-cy="tbody-row-actions-container">
           <div className="w-4 mr-2 hover:text-dark-green hover:scale-125">
-            <Link to="#" data-cy="tbody-row-actions-view">
+            <Link to={`/client/${client.id}/view`} data-cy="tbody-row-actions-view">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

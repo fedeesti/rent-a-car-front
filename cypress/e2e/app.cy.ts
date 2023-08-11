@@ -813,6 +813,46 @@ describe('Rent a car', () => {
           .contains('Delete');
       });
     });
+    describe('View client', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-client-btn"]').click();
+        cy.get('[data-cy="dropdown-client-list"]').click();
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.url().should('include', '/view');
+      });
+      it('should show a client card', () => {
+        cy.get('[data-cy="card-client-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="card-client-header-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-header-title"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Javier Milei');
+        cy.get('[data-cy="card-client-header-link"]')
+          .should('exist')
+          .and('be.visible')
+          .and('have.attr', 'href', '/client')
+          .contains('Go back');
+
+        cy.get('[data-cy="card-client-details-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-doc-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-birthdate"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-nationality"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-phone"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-email"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-address"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="card-client-btn-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-btn-edit"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Edit client');
+        cy.get('[data-cy="card-client-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
+      });
+    });
   });
 });
 //  cy.get('[]').should('exist').and('be.visible');
