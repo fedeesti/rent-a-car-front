@@ -6,7 +6,7 @@ const URL_API_BASE = 'http://localhost:3000';
 const route = {
   home: '/',
   cars: '/cars',
-  clients: '/client',
+  clients: '/user',
   reservation: '/reservation',
 };
 
@@ -587,92 +587,112 @@ describe('Rent a car', () => {
     });
   });
 
-  describe.only('Clients management', () => {
-    describe('Client List page', () => {
-      beforeEach(() => {
-        cy.get('[data-cy="aside-client-btn"]').click();
-        cy.get('[data-cy="dropdown-client-list"]').click();
-        cy.url().should('include', '/client');
-      });
-      it('should show the client list page', () => {
-        cy.get('[data-cy="client-list-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
-      });
-      it('should show the client list header', () => {
-        cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="list-header-search-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="list-header-btn-add"]')
-          .should('exist')
-          .and('be.visible')
-          .and('contain', 'Add client');
-      });
-      it('should show a client table', () => {
-        cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
-
-        cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="thead-row-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="thead-row-name"]')
-          .should('exist')
-          .and('be.visible')
-          .and('contain', 'Name');
-        cy.get('[data-cy="thead-row-nationality"]')
-          .should('exist')
-          .and('be.visible')
-          .and('contain', 'Nationality');
-        cy.get('[data-cy="thead-row-action"]')
-          .should('exist')
-          .and('be.visible')
-          .and('contain', 'Action');
-
-        cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-container"]')
-          .should('exist')
-          .and('be.visible')
-          .and('have.length', 3);
-        cy.get('[data-cy="tbody-row-name"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-email"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-nationality"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-actions-container"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-actions-view"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-actions-edit"]').should('exist').and('be.visible');
-        cy.get('[data-cy="tbody-row-actions-delete"]').should('exist').and('be.visible');
-      });
-      describe('Modal', () => {
+  describe('Clients management', () => {
+    describe.only('Client List page', () => {
+      describe('With clients', () => {
         beforeEach(() => {
-          cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+          cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+            fixture: './client/three-clients.json',
+          });
+          cy.get('[data-cy="aside-client-btn"]').click();
+          cy.get('[data-cy="dropdown-client-list"]').click();
+          cy.url().should('include', '/client');
         });
-        it('when clicking delete should open a modal', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
-          cy.get('[data-cy="modal-btn-close"]').should('be.visible');
-          cy.get('[data-cy="modal-information"]')
-            .should('be.visible')
-            .and('contain', 'Are you sure you want to delete');
-          cy.get('[data-cy="modal-btn-confirm"]')
-            .should('be.visible')
-            .and('contain', "Yes, I'm sure");
-          cy.get('[data-cy="modal-btn-cancel"]').should('be.visible').and('contain', 'No, cancel');
+        it('should show the client list page', () => {
+          cy.get('[data-cy="client-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="list-message-without-clients"]').should('not.exist');
+          cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
         });
-        it('when clicking outside the modal, should close it', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+        it('should show the client list header', () => {
+          cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="list-header-search-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="list-header-btn-add"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Add client');
+        });
+        it('should show a client table', () => {
+          cy.get('[data-cy="list-message-without-clients"]').should('not.exist');
+          cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
 
-          cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
-          cy.get('[data-cy="modal-container"]').should('not.exist');
-        });
-        it('when clicking on the modal close should close it', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="thead-row-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="thead-row-name"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Name');
+          cy.get('[data-cy="thead-row-nationality"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Nationality');
+          cy.get('[data-cy="thead-row-action"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Action');
 
-          cy.get('[data-cy="modal-btn-close"]').click();
-          cy.get('[data-cy="modal-container"]').should('not.exist');
+          cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-container"]')
+            .should('exist')
+            .and('be.visible')
+            .and('have.length', 3);
+          cy.get('[data-cy="tbody-row-name"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-email"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-nationality"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-view"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-edit"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-delete"]').should('exist').and('be.visible');
         });
-        it('when clicking the button cancel should close it', () => {
-          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+        describe('Modal', () => {
+          beforeEach(() => {
+            cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+          });
+          it('when clicking delete should open a modal', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+            cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+            cy.get('[data-cy="modal-information"]')
+              .should('be.visible')
+              .and('contain', 'Are you sure you want to delete');
+            cy.get('[data-cy="modal-btn-confirm"]')
+              .should('be.visible')
+              .and('contain', "Yes, I'm sure");
+            cy.get('[data-cy="modal-btn-cancel"]')
+              .should('be.visible')
+              .and('contain', 'No, cancel');
+          });
+          it('when clicking outside the modal, should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
 
-          cy.get('[data-cy="modal-btn-cancel"]').click();
-          cy.get('[data-cy="modal-container"]').should('not.exist');
+            cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking on the modal close should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-close"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking the button cancel should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-cancel"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
         });
+      });
+      describe('Without clients', () => {
+        beforeEach(() => {
+          cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+            body: [],
+          });
+          cy.get('[data-cy="aside-client-btn"]').click();
+          cy.get('[data-cy="dropdown-client-list"]').click();
+          cy.url().should('include', '/client');
+        });
+        it('should show the client list page with the message no clients available', () => {});
       });
     });
     describe('Create client', () => {

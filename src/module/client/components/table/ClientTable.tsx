@@ -2,7 +2,7 @@ import { Client } from '../../types/client';
 import ClientRow from './ClientRow';
 
 interface IProps {
-  clients: Client[];
+  clients: Client[] | undefined;
 }
 
 function ClientTable({ clients }: IProps) {
@@ -26,9 +26,7 @@ function ClientTable({ clients }: IProps) {
           </tr>
         </thead>
         <tbody data-cy="client-tbody-container">
-          {clients.map((client: Client) => (
-            <ClientRow client={client} />
-          ))}
+          {clients?.map((client: Client) => <ClientRow client={client} key={client.id} />)}
         </tbody>
       </table>
     </div>
