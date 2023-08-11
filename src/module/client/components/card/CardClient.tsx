@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Client } from '../../types/client';
+import Modal from '../modal/Modal';
+import useClientModal from '../../hooks/useClientModal';
 
 const client: Client = {
   id: 1,
@@ -15,6 +17,7 @@ const client: Client = {
 };
 
 function CardClient() {
+  const { showModal, openModal, closeModal } = useClientModal();
   return (
     <div
       className="w-full m-auto max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8"
@@ -129,6 +132,7 @@ function CardClient() {
         </button>
         <button
           type="button"
+          onClick={openModal}
           className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           data-cy="card-client-btn-delete"
         >
@@ -147,6 +151,7 @@ function CardClient() {
           Delete
         </button>
       </div>
+      {showModal && <Modal fullname={`${client.name} ${client.lastname}`} onClose={closeModal} />}
     </div>
   );
 }

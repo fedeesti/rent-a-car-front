@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Client } from '../../types/client';
+import Modal from '../modal/Modal';
+import useClientModal from '../../hooks/useClientModal';
 
 interface IProps {
   client: Client;
 }
 
 function ClientRow({ client }: IProps) {
+  const { showModal, openModal, closeModal } = useClientModal();
   return (
     <tr className="bg-white border-b hover:bg-gray-100" data-cy="tbody-row-container">
       <th
@@ -67,7 +70,7 @@ function ClientRow({ client }: IProps) {
             </Link>
           </div>
           <div className="w-4 mr-2 hover:text-red-500 hover:scale-125">
-            <button className="w-4 h-4" data-cy="tbody-row-actions-delete">
+            <button className="w-4 h-4" onClick={openModal} data-cy="tbody-row-actions-delete">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -84,6 +87,7 @@ function ClientRow({ client }: IProps) {
             </button>
           </div>
         </div>
+        {showModal && <Modal fullname={`${client.name} ${client.lastname}`} onClose={closeModal} />}
       </td>
     </tr>
   );

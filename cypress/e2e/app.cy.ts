@@ -640,6 +640,40 @@ describe('Rent a car', () => {
         cy.get('[data-cy="tbody-row-actions-edit"]').should('exist').and('be.visible');
         cy.get('[data-cy="tbody-row-actions-delete"]').should('exist').and('be.visible');
       });
+      describe('Modal', () => {
+        beforeEach(() => {
+          cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+        });
+        it('when clicking delete should open a modal', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+          cy.get('[data-cy="modal-information"]')
+            .should('be.visible')
+            .and('contain', 'Are you sure you want to delete');
+          cy.get('[data-cy="modal-btn-confirm"]')
+            .should('be.visible')
+            .and('contain', "Yes, I'm sure");
+          cy.get('[data-cy="modal-btn-cancel"]').should('be.visible').and('contain', 'No, cancel');
+        });
+        it('when clicking outside the modal, should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking on the modal close should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-close"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking the button cancel should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-cancel"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+      });
     });
     describe('Create client', () => {
       beforeEach(() => {
@@ -851,6 +885,40 @@ describe('Rent a car', () => {
           .should('exist')
           .and('be.visible')
           .contains('Delete');
+      });
+      describe('Modal', () => {
+        beforeEach(() => {
+          cy.get('[data-cy="card-client-btn-delete"]').click();
+        });
+        it('when clicking delete should open a modal', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+          cy.get('[data-cy="modal-information"]')
+            .should('be.visible')
+            .and('contain', 'Are you sure you want to delete');
+          cy.get('[data-cy="modal-btn-confirm"]')
+            .should('be.visible')
+            .and('contain', "Yes, I'm sure");
+          cy.get('[data-cy="modal-btn-cancel"]').should('be.visible').and('contain', 'No, cancel');
+        });
+        it('when clicking outside the modal, should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking on the modal close should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-close"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking the button cancel should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-cancel"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
       });
     });
   });
