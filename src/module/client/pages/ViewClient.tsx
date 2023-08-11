@@ -1,4 +1,4 @@
-import CardClient from '../components/car/CardClient';
+import CardClient from '../components/card/CardClient';
 
 function ViewClient() {
   return (
