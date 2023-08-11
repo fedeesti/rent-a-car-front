@@ -135,7 +135,7 @@ function SideBar(): JSX.Element {
               >
                 <li>
                   <Link
-                    to="#"
+                    to="/client"
                     className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-client-list"
                   >

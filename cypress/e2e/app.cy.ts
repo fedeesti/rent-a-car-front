@@ -586,4 +586,60 @@ describe('Rent a car', () => {
       });
     });
   });
+
+  describe.only('Clients management', () => {
+    beforeEach(() => {
+      cy.get('[data-cy="aside-client-btn"]').click();
+      cy.get('[data-cy="dropdown-client-list"]').click();
+      cy.url().should('include', '/client');
+    });
+    describe('Car List page', () => {
+      it('should show the client list page', () => {
+        cy.get('[data-cy="client-list-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
+      });
+      it('should show the client list header', () => {
+        cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="list-header-search-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="list-header-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add client');
+      });
+      it('should show a client table', () => {
+        cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="thead-row-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="thead-row-name"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Name');
+        cy.get('[data-cy="thead-row-nationality"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Nationality');
+        cy.get('[data-cy="thead-row-action"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Action');
+
+        cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-container"]')
+          .should('exist')
+          .and('be.visible')
+          .and('have.length', 3);
+        cy.get('[data-cy="tbody-row-name"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-email"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-nationality"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-actions-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-actions-view"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-actions-edit"]').should('exist').and('be.visible');
+        cy.get('[data-cy="tbody-row-actions-delete"]').should('exist').and('be.visible');
+      });
+    });
+  });
 });
