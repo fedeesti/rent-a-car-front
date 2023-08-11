@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  background-image: linear-gradient(
+    to top,
+    #6c858c,
+    #7f949c,
+    #92a4ab,
+    #a6b4bb,
+    #bdc5cc,
+    #d4d8dd,
+    #eaeaed,
+    #fefefe
+  );
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}

@@ -1,17 +1,15 @@
-import { Routes, Route } from 'react-router-dom';
-import { HomePage } from './pages/HomePage';
+import Navbar from './common/components/nabvar/Navbar';
+import SideBar from './common/components/side/SideBar';
+import AppRoutes from './common/routes';
+import Footer from './common/components/footer/Footer';
+import Header from './common/components/header/Header';
 
-function App() {
+function App(): JSX.Element {
   return (
     <>
-      <header>
-        <h1 className="text-red-700">Hello, World!</h1>
-      </header>
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </main>
+      <Header />
+      <AppRoutes />
+      <Footer />
     </>
   );
 }
