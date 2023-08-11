@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function ClientHeader() {
   return (
     <div
@@ -28,7 +30,7 @@ function ClientHeader() {
             <input
               type="text"
               id="simple-search"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2"
               placeholder="Search"
             />
           </div>
@@ -38,7 +40,7 @@ function ClientHeader() {
         <button
           type="button"
           data-cy="list-header-btn-add"
-          className="flex items-center justify-center text-white bg-dark-green hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+          className="flex items-center justify-center text-white bg-dark-green hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2"
         >
           <svg
             className="h-3.5 w-3.5 mr-2"
@@ -48,12 +50,12 @@ function ClientHeader() {
             aria-hidden="true"
           >
             <path
-              clip-rule="evenodd"
-              fill-rule="evenodd"
+              clipRule="evenodd"
+              fillRule="evenodd"
               d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
             />
           </svg>
-          Add client
+          <Link to="/client/create">Add client</Link>
         </button>
       </div>
     </div>
