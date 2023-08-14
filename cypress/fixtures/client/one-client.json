@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "Javier",
+  "lastname": "Milei",
+  "docType": "DNI",
+  "docNumber": "12345678",
+  "nationality": "Argentina",
+  "address": "Av. Libertador 1234, Capital Federal",
+  "phone": "1122334455",
+  "email": "javier.milei@gmail.com",
+  "birthdate": "01/10/1960"
+}

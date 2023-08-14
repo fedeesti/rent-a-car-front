@@ -6,7 +6,7 @@ const URL_API_BASE = 'http://localhost:3000';
 const route = {
   home: '/',
   cars: '/cars',
-  clients: '/client',
+  clients: '/user',
   reservation: '/reservation',
 };
 
@@ -583,6 +583,410 @@ describe('Rent a car', () => {
         cy.get('[data-cy="modal-btn-confirm"]').click();
 
         cy.get('[data-cy="car-row-table"]').should('have.length', 2);
+      });
+    });
+  });
+
+  describe('Clients management', () => {
+    describe('Client List page', () => {
+      describe('With clients', () => {
+        beforeEach(() => {
+          cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+            fixture: './client/three-clients.json',
+          });
+          cy.get('[data-cy="aside-client-btn"]').click();
+          cy.get('[data-cy="dropdown-client-list"]').click();
+          cy.url().should('include', '/client');
+        });
+        it('should show the client list page', () => {
+          cy.get('[data-cy="client-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="list-message-without-clients"]').should('not.exist');
+          cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
+        });
+        it('should show the client list header', () => {
+          cy.get('[data-cy="client-list-header-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="list-header-search-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="list-header-btn-add"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Add client');
+        });
+        it('should show a client table', () => {
+          cy.get('[data-cy="list-message-without-clients"]').should('not.exist');
+          cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="client-thead-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="thead-row-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="thead-row-name"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Name');
+          cy.get('[data-cy="thead-row-nationality"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Nationality');
+          cy.get('[data-cy="thead-row-action"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'Action');
+
+          cy.get('[data-cy="client-tbody-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-container"]')
+            .should('exist')
+            .and('be.visible')
+            .and('have.length', 3);
+          cy.get('[data-cy="tbody-row-name"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-email"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-nationality"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-view"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-edit"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-delete"]').should('exist').and('be.visible');
+        });
+        describe('Modal', () => {
+          beforeEach(() => {
+            cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+          });
+          it('when clicking delete should open a modal', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+            cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+            cy.get('[data-cy="modal-information"]')
+              .should('be.visible')
+              .and('contain', 'Are you sure you want to delete');
+            cy.get('[data-cy="modal-btn-confirm"]')
+              .should('be.visible')
+              .and('contain', "Yes, I'm sure");
+            cy.get('[data-cy="modal-btn-cancel"]')
+              .should('be.visible')
+              .and('contain', 'No, cancel');
+          });
+          it('when clicking outside the modal, should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking on the modal close should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-close"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking the button cancel should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-cancel"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+        });
+      });
+      describe('Without clients', () => {
+        beforeEach(() => {
+          cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+            body: [],
+          });
+          cy.get('[data-cy="aside-client-btn"]').click();
+          cy.get('[data-cy="dropdown-client-list"]').click();
+          cy.url().should('include', '/client');
+        });
+        it('should show the client list page with the message no clients available', () => {});
+      });
+    });
+    describe('Create client', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-client-btn"]').click();
+      });
+      it('should show the create client page from the sidebar', () => {
+        cy.get('[data-cy="dropdown-client-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-client-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-client-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new client');
+        cy.get('[data-cy="client-form-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Client');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
+      });
+      it('should show the create client page from the client list page', () => {
+        cy.get('[data-cy="dropdown-client-list"]').click();
+        cy.get('[data-cy="list-header-btn-add"]').find('a').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-client-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-client-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new client');
+        cy.get('[data-cy="client-form-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Client');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
+      });
+      it('should show the create client form', () => {
+        cy.get('[data-cy="dropdown-client-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-client-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-client-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new client');
+
+        cy.get('[data-cy="client-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="client-form-first-name"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-first-name"]').find('label').contains('First name');
+        cy.get('[data-cy="client-form-first-name"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type name');
+
+        cy.get('[data-cy="client-form-last-name"]').find('label').contains('Last name');
+        cy.get('[data-cy="client-form-last-name"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type last name');
+
+        cy.get('[data-cy="client-form-nationality"]').find('label').contains('Nationality');
+
+        cy.get('[data-cy="client-form-doc-type"]').find('label').contains('Document Type');
+
+        cy.get('[data-cy="client-form-doc-number"]').find('label').contains('Document Number');
+        cy.get('[data-cy="client-form-doc-number"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type Document Number');
+
+        cy.get('[data-cy="client-form-address"]').find('label').contains('Address');
+        cy.get('[data-cy="client-form-address"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type address');
+
+        cy.get('[data-cy="client-form-phone"]').find('label').contains('Phone');
+        cy.get('[data-cy="client-form-phone"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type phone');
+
+        cy.get('[data-cy="client-form-email"]').find('label').contains('Email');
+        cy.get('[data-cy="client-form-email"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'example@email.com');
+
+        cy.get('[data-cy="client-form-birthdate"]').find('label').contains('Birthdate');
+
+        cy.get('[data-cy="client-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Client');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
+      });
+    });
+    describe('Edit client', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-client-btn"]').click();
+        cy.get('[data-cy="dropdown-client-list"]').click();
+        cy.url().should('include', '/client');
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.url().should('include', '/edit');
+      });
+      it('should show the form to update a client', () => {
+        cy.get('[data-cy="edit-client-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="edit-client-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Edit client');
+
+        cy.get('[data-cy="client-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="client-form-first-name"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-first-name"]').find('label').contains('First name');
+        cy.get('[data-cy="client-form-first-name"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-last-name"]').find('label').contains('Last name');
+        cy.get('[data-cy="client-form-last-name"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-nationality"]').find('label').contains('Nationality');
+
+        cy.get('[data-cy="client-form-doc-type"]').find('label').contains('Document Type');
+
+        cy.get('[data-cy="client-form-doc-number"]').find('label').contains('Document Number');
+        cy.get('[data-cy="client-form-doc-number"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-address"]').find('label').contains('Address');
+        cy.get('[data-cy="client-form-address"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-phone"]').find('label').contains('Phone');
+        cy.get('[data-cy="client-form-phone"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-email"]').find('label').contains('Email');
+        cy.get('[data-cy="client-form-email"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('not.be.empty');
+
+        cy.get('[data-cy="client-form-birthdate"]').find('label').contains('Birthdate');
+
+        cy.get('[data-cy="client-form-btn-add"]').should('not.exist');
+
+        cy.get('[data-cy="client-form-btn-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="client-form-btn-update"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Update client');
+        cy.get('[data-cy="client-form-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
+      });
+    });
+    describe('View client', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/three-clients.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.get('[data-cy="aside-client-btn"]').click();
+        cy.get('[data-cy="dropdown-client-list"]').click();
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.url().should('include', '/view');
+      });
+      it('should show a client card', () => {
+        cy.get('[data-cy="card-client-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="card-client-header-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-header-title"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Javier Milei');
+        cy.get('[data-cy="card-client-header-link"]')
+          .should('exist')
+          .and('be.visible')
+          .and('have.attr', 'href', '/client')
+          .contains('Go back');
+
+        cy.get('[data-cy="card-client-details-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-doc-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-birthdate"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-nationality"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-phone"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-email"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-address"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="card-client-btn-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-client-btn-edit"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Edit client');
+        cy.get('[data-cy="card-client-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
+      });
+      describe('Modal', () => {
+        beforeEach(() => {
+          cy.get('[data-cy="card-client-btn-delete"]').click();
+        });
+        it('when clicking delete should open a modal', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+          cy.get('[data-cy="modal-information"]')
+            .should('be.visible')
+            .and('contain', 'Are you sure you want to delete');
+          cy.get('[data-cy="modal-btn-confirm"]')
+            .should('be.visible')
+            .and('contain', "Yes, I'm sure");
+          cy.get('[data-cy="modal-btn-cancel"]').should('be.visible').and('contain', 'No, cancel');
+        });
+        it('when clicking outside the modal, should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking on the modal close should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-close"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking the button cancel should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-cancel"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+      });
+    });
+    describe.only('Delete client', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/three-clients.json',
+        });
+        cy.get('[data-cy="aside-client-btn"]').click();
+        cy.get('[data-cy="dropdown-client-list"]').click();
+      });
+      it('when deleting a client from the table, should delete successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+        cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/two-clients.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+      it('when deleting a car from the Car card, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.get('[data-cy="card-client-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/two-clients.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
     });
   });
