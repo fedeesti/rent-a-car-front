@@ -2,7 +2,7 @@
   "id": 1,
   "name": "Javier",
   "lastname": "Milei",
-  "docType": "DNI",
+  "docType": "dni",
   "docNumber": "12345678",
   "nationality": "Argentina",
   "address": "Av. Libertador 1234, Capital Federal",
