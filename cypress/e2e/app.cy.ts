@@ -831,7 +831,7 @@ describe('Rent a car', () => {
         cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
       });
     });
-    describe.only('Edit client', () => {
+    describe('Edit client', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
           fixture: './client/three-clients.json',
