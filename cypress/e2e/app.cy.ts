@@ -446,7 +446,7 @@ describe('Rent a car', () => {
       it('should show a form to edit a car', () => {
         cy.url().should('include', '/edit');
 
-        cy.get('[data-cy="add-car-container"]').should('be.visible');
+        cy.get('[data-cy="edit-car-container"]').should('be.visible');
         cy.get('[data-cy="edit-car-title"]').contains('Edit a car');
         cy.get('[data-cy="add-car-form-container"]').should('be.visible');
 
