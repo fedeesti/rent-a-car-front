@@ -695,7 +695,7 @@ describe('Rent a car', () => {
         it('should show the client list page with the message no clients available', () => {});
       });
     });
-    describe('Create client', () => {
+    describe.only('Create client', () => {
       beforeEach(() => {
         cy.get('[data-cy="aside-client-btn"]').click();
       });
@@ -792,6 +792,43 @@ describe('Rent a car', () => {
           .and('be.visible')
           .and('contain', 'Add Client');
         cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
+      });
+      it('should create a client successfully', () => {
+        const clientDto = {
+          name: 'Javier',
+          lastname: 'Milei',
+          docType: 'dni',
+          docNumber: '12345678',
+          nationality: 'Argentina',
+          address: 'Avenida Figueroa Alcorta 7450',
+          phone: '1122334455',
+          email: 'javier@milei.com',
+          birthdate: '1901-01-25',
+        };
+
+        cy.get('[data-cy="dropdown-client-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="client-form-first-name"]').find('input').type(clientDto.name);
+        cy.get('[data-cy="client-form-last-name"]').find('input').type(clientDto.lastname);
+        cy.get('[data-cy="client-form-nationality"]').find('select').type(clientDto.nationality);
+        cy.get('[data-cy="client-form-doc-type"]').find('select').type(clientDto.docType);
+        cy.get('[data-cy="client-form-doc-number"]').find('input').type(clientDto.docNumber);
+        cy.get('[data-cy="client-form-address"]').find('input').type(clientDto.address);
+        cy.get('[data-cy="client-form-phone"]').find('input').type(clientDto.phone);
+        cy.get('[data-cy="client-form-email"]').find('input').type(clientDto.email);
+        cy.get('[data-cy="client-form-birthdate"]').find('input').type(clientDto.birthdate);
+
+        cy.intercept('POST', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/one-client.json',
+        }).as('createdClient');
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/two-clients.json',
+        }).as('getClients');
+        cy.get('[data-cy="client-form-btn-add"]').click();
+
+        cy.url().should('not.include', '/create');
+        cy.get('[data-cy="client-table-container"]').should('exist').and('be.visible');
       });
     });
     describe('Edit client', () => {
@@ -947,7 +984,7 @@ describe('Rent a car', () => {
         });
       });
     });
-    describe.only('Delete client', () => {
+    describe('Delete client', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
           fixture: './client/three-clients.json',

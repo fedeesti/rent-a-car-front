@@ -25,6 +25,20 @@ export class ClientService {
     }
   }
 
+  async create(clientDto: Client) {
+    try {
+      const response = await axios.post(`${URL_API_BASE}${BASE_ROUTE}`, JSON.stringify(clientDto), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return response;
+    } catch (error) {
+      throw new Error('Error submitting the form');
+    }
+  }
+
   async delete(id: number | undefined): Promise<AxiosResponse<any, any>> {
     try {
       const response: AxiosResponse<any, any> = await axios.delete(
