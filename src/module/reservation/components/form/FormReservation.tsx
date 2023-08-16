@@ -161,14 +161,14 @@ function FormReservation() {
               <button
                 type="submit"
                 className="text-white bg-dark-green select-none font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-                data-cy="client-form-btn-update"
+                data-cy="reservation-form-btn-update"
               >
                 Update reservation
               </button>
               <button
                 type="button"
                 className="text-red-600 bg-gray-100 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                data-cy="client-form-btn-delete"
+                data-cy="reservation-form-btn-delete"
               >
                 <svg
                   className="w-5 h-5 mr-1 -ml-1"
