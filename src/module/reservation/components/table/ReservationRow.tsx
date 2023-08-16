@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Reservation } from '../../types/reservation';
+import Modal from '../modal/Modal';
+import useModalReservation from '../../hooks/useModalReservation';
 
 interface IProps {
   reservation: Reservation;
 }
 
 function ReservationRow({ reservation }: IProps): JSX.Element {
+  const { showModal, openModal, closeModal } = useModalReservation();
+
   return (
     <tr className="bg-white border-b hover:bg-gray-50">
       <th
@@ -32,7 +36,7 @@ function ReservationRow({ reservation }: IProps): JSX.Element {
               reservation.statusId ? 'bg-green-500' : 'bg-red-500'
             }`}
           ></div>
-          {reservation.statusId ? 'Paid' : 'Not payed'}
+          {reservation.statusId ? 'Paid' : 'Pending'}
         </div>
       </td>
       <td className="px-6 py-4" data-cy="reservation-tbody-actions-container">
@@ -78,7 +82,7 @@ function ReservationRow({ reservation }: IProps): JSX.Element {
             </Link>
           </div>
           <div className="w-4 mr-2 hover:text-red-500 hover:scale-125">
-            <button className="w-4 h-4" data-cy="tbody-row-actions-delete">
+            <button className="w-4 h-4" data-cy="tbody-row-actions-delete" onClick={openModal}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -95,6 +99,7 @@ function ReservationRow({ reservation }: IProps): JSX.Element {
             </button>
           </div>
         </div>
+        {showModal && <Modal id={reservation.id} onClose={closeModal} />}
       </td>
     </tr>
   );
