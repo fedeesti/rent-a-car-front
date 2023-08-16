@@ -29,7 +29,7 @@ function ReservationTable({ reservations }: IProps): JSX.Element {
           </tr>
         </thead>
         <tbody data-cy="reservation-tbody-container">
-          {reservations.map((reservation) => (
+          {reservations?.map((reservation) => (
             <ReservationRow key={reservation.id} reservation={reservation} />
           ))}
         </tbody>
