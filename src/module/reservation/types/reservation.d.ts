@@ -1,8 +1,8 @@
 export interface Reservation {
   id: number;
-  startDate: Date;
+  startDate: string;
 
-  finishDate: Date;
+  finishDate: string;
 
   pricePerDay: number;
 

@@ -1133,7 +1133,7 @@ describe('Rent a car', () => {
     });
   });
 
-  describe.only('Reservation management', () => {
+  describe('Reservation management', () => {
     describe('List Reservation', () => {
       describe('With reservations', () => {
         beforeEach(() => {
@@ -1253,10 +1253,13 @@ describe('Rent a car', () => {
         });
       });
     });
-    describe('View Reservation', () => {
+    describe.only('View Reservation', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
           fixture: './reservation/three-reservations.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
         });
         cy.get('[data-cy="aside-reservation-btn"]').click();
         cy.get('[data-cy="dropdown-reservation-list"]').click();

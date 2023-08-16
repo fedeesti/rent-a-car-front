@@ -14,4 +14,13 @@ export class ReservationService {
       throw new Error('Failed while fetching reservations');
     }
   }
+
+  async findById(id: string | undefined): Promise<Reservation> {
+    try {
+      const { data } = await axios.get(`${URL_API_BASE}${BASE_ROUTE}/${id}`);
+      return data;
+    } catch (error) {
+      throw new Error('Failed while fetching reservation');
+    }
+  }
 }

@@ -4,7 +4,7 @@ import Modal from '../modal/Modal';
 import useModalReservation from '../../hooks/useModalReservation';
 
 interface IProps {
-  reservation: Reservation;
+  reservation: Reservation | undefined;
 }
 
 function ReservationCard({ reservation }: IProps) {
@@ -22,7 +22,7 @@ function ReservationCard({ reservation }: IProps) {
           className="text-xl font-bold leading-none text-gray-900"
           data-cy="card-reservation-header-title"
         >
-          Reservation #{reservation.id}
+          Reservation #{reservation?.id}
         </h5>
         <Link
           to="/reservation"
@@ -46,7 +46,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation.client.name} {reservation.client.lastname}
+                {reservation?.client.name} {reservation?.client.lastname}
               </div>
             </div>
           </li>
@@ -58,7 +58,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation.car.brand} {reservation.car.model}
+                {reservation?.car.brand} {reservation?.car.model}
               </div>
             </div>
           </li>
@@ -70,7 +70,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation.startDate.toLocaleDateString()}
+                {reservation?.startDate}
               </div>
             </div>
           </li>
@@ -82,7 +82,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation.finishDate.toLocaleDateString()}
+                {reservation?.finishDate}
               </div>
             </div>
           </li>
@@ -94,7 +94,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                ${reservation.pricePerDay}
+                ${reservation?.pricePerDay}
               </div>
             </div>
           </li>
@@ -106,7 +106,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                ${reservation.totalPrice}
+                ${reservation?.totalPrice}
               </div>
             </div>
           </li>
@@ -118,7 +118,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation.paymentMethod}
+                {reservation?.paymentMethod}
               </div>
             </div>
           </li>
@@ -130,7 +130,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation.statusId ? 'Paid' : 'Pending'}
+                {reservation?.statusId ? 'Paid' : 'Pending'}
               </div>
             </div>
           </li>
@@ -145,7 +145,7 @@ function ReservationCard({ reservation }: IProps) {
           className="text-white bg-dark-green select-none font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           data-cy="card-reservation-btn-edit"
         >
-          <Link to={`/reservation/${reservation.id}/edit`}>Edit reservation</Link>
+          <Link to={`/reservation/${reservation?.id}/edit`}>Edit reservation</Link>
         </button>
         <button
           type="button"
@@ -168,7 +168,7 @@ function ReservationCard({ reservation }: IProps) {
           Delete
         </button>
       </div>
-      {showModal && <Modal id={reservation.id} onClose={closeModal} />}
+      {showModal && <Modal id={reservation?.id} onClose={closeModal} />}
     </div>
   );
 }

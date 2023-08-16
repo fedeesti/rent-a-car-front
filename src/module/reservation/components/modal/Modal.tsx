@@ -1,5 +1,5 @@
 interface IProps {
-  id: number;
+  id: number | undefined;
   onClose: () => void;
 }
 
