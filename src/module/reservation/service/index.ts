@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Reservation } from '../types/reservation';
 
 const URL_API_BASE = import.meta.env.VITE_URL_API_BASE;
@@ -21,6 +21,17 @@ export class ReservationService {
       return data;
     } catch (error) {
       throw new Error('Failed while fetching reservation');
+    }
+  }
+
+  async delete(id: number | undefined): Promise<AxiosResponse<any, any>> {
+    try {
+      const response: AxiosResponse<any, any> = await axios.delete(
+        `${URL_API_BASE}${BASE_ROUTE}/${id}`,
+      );
+      return response;
+    } catch (error) {
+      throw new Error('Error in deleting the reservation');
     }
   }
 }

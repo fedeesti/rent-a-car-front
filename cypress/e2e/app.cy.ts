@@ -1133,7 +1133,7 @@ describe('Rent a car', () => {
     });
   });
 
-  describe('Reservation management', () => {
+  describe.only('Reservation management', () => {
     describe('List Reservation', () => {
       describe('With reservations', () => {
         beforeEach(() => {
@@ -1253,7 +1253,7 @@ describe('Rent a car', () => {
         });
       });
     });
-    describe.only('View Reservation', () => {
+    describe('View Reservation', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
           fixture: './reservation/three-reservations.json',
@@ -1328,6 +1328,49 @@ describe('Rent a car', () => {
           cy.get('[data-cy="modal-btn-cancel"]').click();
           cy.get('[data-cy="modal-container"]').should('not.exist');
         });
+      });
+    });
+    describe('Delete Reservation', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="aside-reservation-btn"]').click();
+        cy.get('[data-cy="dropdown-reservation-list"]').click();
+        cy.url().should('include', '/reservation');
+      });
+      it('when deleting a reservation from the table, should delete successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+        cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/two-reservations.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+      it('when deleting a reservation from the Car reservation, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.get('[data-cy="card-reservation-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/two-reservations.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
     });
   });
