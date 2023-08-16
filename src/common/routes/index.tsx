@@ -10,6 +10,8 @@ import EditClient from '../../module/client/pages/EditClient';
 import ViewClient from '../../module/client/pages/ViewClient';
 import ReservationList from '../../module/reservation/pages/ReservationList';
 import ViewReservation from '../../module/reservation/pages/ViewReservation';
+import AddReservation from '../../module/reservation/pages/AddReservation';
+import EditReservation from '../../module/reservation/pages/EditReservation';
 
 function AppRoutes(): JSX.Element {
   return (
@@ -27,7 +29,9 @@ function AppRoutes(): JSX.Element {
       </Route>
       <Route path="/reservation">
         <Route index element={<ReservationList />} />
+        <Route path="create" element={<AddReservation />} />
         <Route path=":reservationId/view" element={<ViewReservation />} />
+        <Route path=":reservationId/edit" element={<EditReservation />} />
       </Route>
     </Routes>
   );
