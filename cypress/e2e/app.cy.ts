@@ -1133,7 +1133,7 @@ describe('Rent a car', () => {
     });
   });
 
-  describe.only('Reservation management', () => {
+  describe('Reservation management', () => {
     describe('List Reservation', () => {
       describe('With reservations', () => {
         beforeEach(() => {
@@ -1328,6 +1328,94 @@ describe('Rent a car', () => {
           cy.get('[data-cy="modal-btn-cancel"]').click();
           cy.get('[data-cy="modal-container"]').should('not.exist');
         });
+      });
+    });
+    describe('Add Reservation', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-reservation-btn"]').click();
+      });
+      it('should show the create reservation page from the sidebar', () => {
+        cy.get('[data-cy="dropdown-reservation-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new reservation');
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Reservation');
+        cy.get('[data-cy="reservation-form-btn-container"]').should('not.exist');
+      });
+      it('should show the create reservation page from the reservation list page', () => {
+        cy.get('[data-cy="dropdown-reservation-list"]').click();
+        cy.get('[data-cy="header-list-add-reservation-btn"]').find('a').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new reservation');
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Reservation');
+        cy.get('[data-cy="reservation-form-btn-container"]').should('not.exist');
+      });
+      it('should show the create reservation form', () => {
+        cy.get('[data-cy="dropdown-reservation-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new reservation');
+
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-from-car"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-car"]').find('label').contains('Car');
+
+        cy.get('[data-cy="reservation-from-client"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-client"]').find('label').contains('Client');
+
+        cy.get('[data-cy="reservation-from-start-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-start-date"]').find('label').and('contain', 'From');
+
+        cy.get('[data-cy="reservation-from-finish-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-finish-date"]').find('label').and('contain', 'Until');
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('label').contains('Price per Day');
+        cy.get('[data-cy="reservation-price-per-day"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type price per Day');
+
+        cy.get('[data-cy="reservation-total-price"]').find('label').contains('Total price');
+        cy.get('[data-cy="reservation-total-price"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type total price');
+
+        cy.get('[data-cy="reservation-payment-method"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-payment-method"]').find('label').contains('Payment Method');
+
+        cy.get('[data-cy="reservation-status-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-status-title"]').contains('Is paid');
+        cy.get('[data-cy="reservation-status-true-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-status-false-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Reservation');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
       });
     });
     describe('Delete Reservation', () => {

@@ -10,12 +10,9 @@ function FormReservation() {
     <Formik initialValues={formData} onSubmit={onSubmitForm}>
       {() => (
         <Form>
-          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-            <div>
-              <label
-                htmlFor="car"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-6" data-cy="reservation-form-container">
+            <div data-cy="reservation-from-car">
+              <label htmlFor="car" className="block mb-2 text-sm font-medium text-gray-900">
                 Car
               </label>
               <select
@@ -30,19 +27,15 @@ function FormReservation() {
                 ))} */}
               </select>
             </div>
-
-            <div>
-              <label
-                htmlFor="user"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                User
+            <div data-cy="reservation-from-client">
+              <label htmlFor="user" className="block mb-2 text-sm font-medium text-gray-900">
+                Client
               </label>
               <select
-                id="user"
+                id="client"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
-                <option value="">Select user</option>
+                <option value="">Select client</option>
                 {/* {users.map((user: User) => (
                   <option key={user.id} value={user.id}>
                     {user.name} {user.lastname}
@@ -50,8 +43,7 @@ function FormReservation() {
                 ))} */}
               </select>
             </div>
-
-            <div>
+            <div data-cy="reservation-from-start-date">
               <label
                 htmlFor="startDate"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -66,8 +58,7 @@ function FormReservation() {
                 placeholder="1999"
               />
             </div>
-
-            <div>
+            <div data-cy="reservation-from-finish-date">
               <label
                 htmlFor="finishDate"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -82,8 +73,7 @@ function FormReservation() {
                 placeholder="1999"
               />
             </div>
-
-            <div className="w-full">
+            <div className="w-full" data-cy="reservation-price-per-day">
               <label
                 htmlFor="pricePerDay"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -98,8 +88,7 @@ function FormReservation() {
                 placeholder="Type price per Day"
               />
             </div>
-
-            <div>
+            <div data-cy="reservation-total-price">
               <label
                 htmlFor="totalPrice"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -111,11 +100,10 @@ function FormReservation() {
                 name="totalPrice"
                 id="totalPrice"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                placeholder="12"
+                placeholder="Type total price"
               />
             </div>
-
-            <div>
+            <div data-cy="reservation-payment-method">
               <label
                 htmlFor="paymentMethod"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -132,11 +120,15 @@ function FormReservation() {
                 <option value="credit card">Credit card</option>
               </select>
             </div>
-
-            <div>
-              <h3 className="block mb-2 text-sm font-medium text-gray-900">Is paid</h3>
+            <div data-cy="reservation-status-container">
+              <h3
+                className="block mb-2 text-sm font-medium text-gray-900"
+                data-cy="reservation-status-title"
+              >
+                Is paid
+              </h3>
               <div className="flex gap-2 pl-2">
-                <div>
+                <div data-cy="reservation-status-true-container">
                   <input
                     type="radio"
                     name="statusId"
@@ -147,7 +139,7 @@ function FormReservation() {
                     Yes
                   </label>
                 </div>
-                <div>
+                <div data-cy="reservation-status-false-container">
                   <input
                     type="radio"
                     name="statusId"
@@ -164,7 +156,7 @@ function FormReservation() {
           {reservationId ? (
             <div
               className="flex items-center justify-between space-x-4 px-6 pt-8"
-              data-cy="client-form-btn-container"
+              data-cy="reservation-form-btn-container"
             >
               <button
                 type="submit"
@@ -196,7 +188,7 @@ function FormReservation() {
           ) : (
             <button
               type="submit"
-              data-cy="client-form-btn-add"
+              data-cy="reservation-form-btn-add"
               className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-dark-green rounded-lg  shadow-md shadow-dark-green/20 transition-all hover:shadow-lg hover:shadow-dark-green/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
             >
               Add Reservation
