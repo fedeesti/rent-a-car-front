@@ -8,6 +8,7 @@ import ClientList from '../../module/client/pages/ClientList';
 import AddClient from '../../module/client/pages/AddClient';
 import EditClient from '../../module/client/pages/EditClient';
 import ViewClient from '../../module/client/pages/ViewClient';
+import ReservationList from '../../module/reservation/pages/ReservationList';
 
 function AppRoutes(): JSX.Element {
   return (
@@ -22,6 +23,9 @@ function AppRoutes(): JSX.Element {
         <Route path="create" element={<AddClient />} />
         <Route path=":clientId/view" element={<ViewClient />} />
         <Route path=":clientId/edit" element={<EditClient />} />
+      </Route>
+      <Route path="/reservation">
+        <Route index element={<ReservationList />} />
       </Route>
     </Routes>
   );
