@@ -17,9 +17,3 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
-
-@media screen and (max-width: 704px) {
-  #root {
-    width: max-content;
-  }
-}

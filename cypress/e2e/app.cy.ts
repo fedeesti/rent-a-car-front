@@ -1111,7 +1111,7 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
-      it('when deleting a car from the Car card, should delete it successfully', () => {
+      it('when deleting a client from the Client card, should delete it successfully', () => {
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
 
         cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
@@ -1125,6 +1125,554 @@ describe('Rent a car', () => {
         });
         cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
           fixture: './client/two-clients.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+    });
+  });
+
+  describe('Reservation management', () => {
+    describe('List Reservation', () => {
+      describe('With reservations', () => {
+        beforeEach(() => {
+          cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+            fixture: './reservation/three-reservations.json',
+          });
+          cy.get('[data-cy="aside-reservation-btn"]').click();
+          cy.get('[data-cy="dropdown-reservation-list"]').click();
+          cy.url().should('include', '/reservation');
+        });
+        it('should show the reservation list page', () => {
+          cy.get('[data-cy="reservation-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="header-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="reservation-table"]').should('exist').and('be.visible');
+          cy.get('[data-cy="reservation-thead-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="reservation-tbody-container"]').should('exist').and('be.visible');
+        });
+        it('should show the reservation list header', () => {
+          cy.get('[data-cy="reservation-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="header-list-search-label"]').should('exist').and('be.visible');
+          cy.get('[data-cy="header-list-add-reservation-btn"]').should('exist').and('be.visible');
+          cy.get('[data-cy="header-list-add-reservation-link"]').should(
+            'have.attr',
+            'href',
+            '/reservation/create',
+          );
+        });
+        it('should show a reservation table', () => {
+          cy.get('[data-cy="reservation-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="reservation-table"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="reservation-thead-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="reservation-thead-client"]')
+            .should('be.visible')
+            .and('contain', 'Client');
+          cy.get('[data-cy="reservation-thead-car"]').should('be.visible').and('contain', 'Car');
+          cy.get('[data-cy="reservation-thead-status"]')
+            .should('be.visible')
+            .and('contain', 'Status');
+          cy.get('[data-cy="reservation-thead-action"]')
+            .should('be.visible')
+            .and('contain', 'Action');
+
+          cy.get('[data-cy="reservation-tbody-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="tbody-row-client-name"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-client-email"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-car"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-status"]').should('exist').and('be.visible');
+          cy.get('[data-cy="reservation-tbody-actions-container"]')
+            .should('exist')
+            .and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-view"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-edit"]').should('exist').and('be.visible');
+          cy.get('[data-cy="tbody-row-actions-delete"]').should('exist').and('be.visible');
+        });
+        describe('Modal', () => {
+          beforeEach(() => {
+            cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+          });
+          it('when clicking delete should open a modal', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+            cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+            cy.get('[data-cy="modal-information"]')
+              .should('be.visible')
+              .and('contain', 'Are you sure you want to delete');
+            cy.get('[data-cy="modal-btn-confirm"]')
+              .should('be.visible')
+              .and('contain', "Yes, I'm sure");
+            cy.get('[data-cy="modal-btn-cancel"]')
+              .should('be.visible')
+              .and('contain', 'No, cancel');
+          });
+          it('when clicking outside the modal, should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking on the modal close should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-close"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+          it('when clicking the button cancel should close it', () => {
+            cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+            cy.get('[data-cy="modal-btn-cancel"]').click();
+            cy.get('[data-cy="modal-container"]').should('not.exist');
+          });
+        });
+      });
+      describe('Without reservations', () => {
+        beforeEach(() => {
+          cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+            body: [],
+          });
+          cy.get('[data-cy="aside-reservation-btn"]').click();
+          cy.get('[data-cy="dropdown-reservation-list"]').click();
+          cy.url().should('include', '/reservation');
+        });
+        it('should show the reservation list page with the message no reservations available', () => {
+          cy.get('[data-cy="reservation-list-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="header-list-search-label"]').should('exist').and('be.visible');
+          cy.get('[data-cy="header-list-add-reservation-btn"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="reservation-table"]').should('not.exist');
+          cy.get('[data-cy="reservation-thead-container"]').should('not.exist');
+          cy.get('[data-cy="reservation-tbody-container"]').should('not.exist');
+
+          cy.get('[data-cy="list-message-without-reservations"]')
+            .should('exist')
+            .and('be.visible')
+            .and('contain', 'There are no reservations loaded at this time');
+        });
+      });
+    });
+    describe('View Reservation', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="aside-reservation-btn"]').click();
+        cy.get('[data-cy="dropdown-reservation-list"]').click();
+        cy.url().should('include', '/reservation');
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.url().should('include', '/view');
+      });
+      it('should show a reservation card', () => {
+        cy.get('[data-cy="card-reservation-container"]').should('exist');
+        cy.get('[data-cy="card-reservation-header-container"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Reservation');
+        cy.get('[data-cy="card-reservation-header-link"]')
+          .should('have.attr', 'href', '/reservation')
+          .and('contain', 'Go back')
+          .and('exist')
+          .and('be.visible');
+        cy.get('[data-cy="card-reservation-details-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-car-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-start-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-finish-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-price-per-day"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-total-price"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-payment-method"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-status"]').should('exist').and('be.visible');
+        cy.get('[data-cy="card-reservation-btn-edit"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Edit reservation');
+        cy.get('[data-cy="card-reservation-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Delete');
+      });
+      describe('Modal', () => {
+        beforeEach(() => {
+          cy.get('[data-cy="card-reservation-btn-delete"]').click();
+        });
+        it('when clicking delete should open a modal', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+          cy.get('[data-cy="modal-btn-close"]').should('be.visible');
+          cy.get('[data-cy="modal-information"]')
+            .should('be.visible')
+            .and('contain', 'Are you sure you want to delete');
+          cy.get('[data-cy="modal-btn-confirm"]')
+            .should('be.visible')
+            .and('contain', "Yes, I'm sure");
+          cy.get('[data-cy="modal-btn-cancel"]').should('be.visible').and('contain', 'No, cancel');
+        });
+        it('when clicking outside the modal, should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="outside-modal-container"]').click('top', { force: true });
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking on the modal close should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-close"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+        it('when clicking the button cancel should close it', () => {
+          cy.get('[data-cy="modal-container"]').should('exist').and('be.visible');
+
+          cy.get('[data-cy="modal-btn-cancel"]').click();
+          cy.get('[data-cy="modal-container"]').should('not.exist');
+        });
+      });
+    });
+    describe('Add Reservation', () => {
+      beforeEach(() => {
+        cy.get('[data-cy="aside-reservation-btn"]').click();
+      });
+      it('should show the create reservation page from the sidebar', () => {
+        cy.get('[data-cy="dropdown-reservation-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new reservation');
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Reservation');
+        cy.get('[data-cy="reservation-form-btn-container"]').should('not.exist');
+      });
+      it('should show the create reservation page from the reservation list page', () => {
+        cy.get('[data-cy="dropdown-reservation-list"]').click();
+        cy.get('[data-cy="header-list-add-reservation-btn"]').find('a').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new reservation');
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Reservation');
+        cy.get('[data-cy="reservation-form-btn-container"]').should('not.exist');
+      });
+      it('should show the create reservation form', () => {
+        cy.get('[data-cy="dropdown-reservation-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="create-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="create-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add a new reservation');
+
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-from-car"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-car"]').find('label').contains('Car');
+
+        cy.get('[data-cy="reservation-from-client"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-client"]').find('label').contains('Client');
+
+        cy.get('[data-cy="reservation-from-start-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-start-date"]').find('label').and('contain', 'From');
+
+        cy.get('[data-cy="reservation-from-finish-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-finish-date"]').find('label').and('contain', 'Until');
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('label').contains('Price per Day');
+        cy.get('[data-cy="reservation-price-per-day"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type price per Day');
+
+        cy.get('[data-cy="reservation-total-price"]').find('label').contains('Total price');
+        cy.get('[data-cy="reservation-total-price"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type total price');
+
+        cy.get('[data-cy="reservation-payment-method"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-payment-method"]').find('label').contains('Payment Method');
+
+        cy.get('[data-cy="reservation-status-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-status-title"]').contains('Is paid');
+        cy.get('[data-cy="reservation-status-true-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-status-false-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-form-btn-add"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Add Reservation');
+        cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
+      });
+      it('should create a reservation successfully', () => {
+        const reservationDto = {
+          startDate: '2023-08-14',
+          finishDate: '2023-08-20',
+          pricePerDay: '10000',
+          totalPrice: '60000',
+          paymentMethod: 'debit card',
+          statusId: 'true',
+          car: 1,
+          user: 1,
+        };
+
+        cy.get('[data-cy="dropdown-reservation-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="reservation-from-car"]').find('select').select(reservationDto.car);
+        cy.get('[data-cy="reservation-from-client"]').find('select').select(reservationDto.user);
+        cy.get('[data-cy="reservation-from-start-date"]')
+          .find('input')
+          .type(reservationDto.startDate);
+        cy.get('[data-cy="reservation-from-finish-date"]')
+          .find('input')
+          .type(reservationDto.finishDate);
+        cy.get('[data-cy="reservation-price-per-day"]')
+          .find('input')
+          .type(reservationDto.pricePerDay);
+        cy.get('[data-cy="reservation-total-price"]').find('input').type(reservationDto.totalPrice);
+        cy.get('[data-cy="reservation-payment-method"]')
+          .find('select')
+          .select(reservationDto.paymentMethod);
+        cy.get('[data-cy="reservation-status-true-container"]').find('input').check();
+
+        cy.intercept('POST', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="reservation-form-btn-add"]').click();
+
+        cy.url().should('not.include', '/create');
+        cy.get('[data-cy="reservation-table"]').should('exist').and('be.visible');
+      });
+    });
+    describe('Edit Reservation', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="aside-reservation-btn"]').click();
+        cy.get('[data-cy="dropdown-reservation-list"]').click();
+        cy.url().should('include', '/reservation');
+      });
+      it('should show the form to update a reservation from the reservation list', () => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="edit-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="edit-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Edit a new reservation');
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-form-btn-add"]').should('not.exist');
+
+        cy.get('[data-cy="reservation-form-btn-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-form-btn-update"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Update reservation');
+        cy.get('[data-cy="reservation-form-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
+      });
+      it('should show the form to update a reservation from the reservation view', () => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.url().should('include', '/view');
+
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="card-reservation-btn-edit"]').click();
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="edit-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="edit-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Edit a new reservation');
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-form-btn-add"]').should('not.exist');
+
+        cy.get('[data-cy="reservation-form-btn-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-form-btn-update"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Update reservation');
+        cy.get('[data-cy="reservation-form-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
+      });
+      it('should show the update reservation form', () => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="edit-reservation-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="edit-reservation-title"]')
+          .should('exist')
+          .and('be.visible')
+          .and('contain', 'Edit a new reservation');
+
+        cy.get('[data-cy="reservation-form-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-from-car"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-car"]').find('label').contains('Car');
+
+        cy.get('[data-cy="reservation-from-client"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-client"]').find('label').contains('Client');
+
+        cy.get('[data-cy="reservation-from-start-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-start-date"]').find('label').and('contain', 'From');
+
+        cy.get('[data-cy="reservation-from-finish-date"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-from-finish-date"]').find('label').and('contain', 'Until');
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('label').contains('Price per Day');
+        cy.get('[data-cy="reservation-price-per-day"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type price per Day');
+
+        cy.get('[data-cy="reservation-total-price"]').find('label').contains('Total price');
+        cy.get('[data-cy="reservation-total-price"]')
+          .find('input')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Type total price');
+
+        cy.get('[data-cy="reservation-payment-method"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-payment-method"]').find('label').contains('Payment Method');
+
+        cy.get('[data-cy="reservation-status-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-status-title"]').contains('Is paid');
+        cy.get('[data-cy="reservation-status-true-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-status-false-container"]').should('exist').and('be.visible');
+
+        cy.get('[data-cy="reservation-form-btn-add"]').should('not.exist');
+        cy.get('[data-cy="reservation-form-btn-container"]').should('exist').and('be.visible');
+        cy.get('[data-cy="reservation-form-btn-update"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Update reservation');
+        cy.get('[data-cy="reservation-form-btn-delete"]')
+          .should('exist')
+          .and('be.visible')
+          .contains('Delete');
+      });
+      it('should update a reservation successfully', () => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/three-clients.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('input').clear();
+        cy.get('[data-cy="reservation-total-price"]').find('input').clear();
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('input').type('20000');
+        cy.get('[data-cy="reservation-total-price"]').find('input').type('90000');
+        cy.get('[data-cy="reservation-payment-method"]').find('select').select('credit card');
+
+        cy.intercept('PATCH', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="reservation-form-btn-update"]').click();
+
+        cy.url().should('not.include', '/edit');
+        cy.get('[data-cy="reservation-table"]').should('exist').and('be.visible');
+      });
+    });
+    describe('Delete Reservation', () => {
+      beforeEach(() => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="aside-reservation-btn"]').click();
+        cy.get('[data-cy="dropdown-reservation-list"]').click();
+        cy.url().should('include', '/reservation');
+      });
+      it('when deleting a reservation from the table, should delete successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+        cy.get('[data-cy="tbody-row-actions-delete"]').eq(0).click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/two-reservations.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+      it('when deleting a reservation from the reservation card, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
+        cy.get('[data-cy="card-reservation-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/two-reservations.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+      it('when deleting a reservation from the form edit reservation, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.get('[data-cy="reservation-form-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/two-reservations.json',
         });
         cy.get('[data-cy="modal-btn-confirm"]').click();
 

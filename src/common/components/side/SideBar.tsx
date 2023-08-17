@@ -200,7 +200,7 @@ function SideBar(): JSX.Element {
               >
                 <li>
                   <Link
-                    to="#"
+                    to="/reservation"
                     className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-reservation-list"
                   >
@@ -209,7 +209,7 @@ function SideBar(): JSX.Element {
                 </li>
                 <li>
                   <Link
-                    to="#"
+                    to="/reservation/create"
                     className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-light-green"
                     data-cy="dropdown-reservation-add"
                   >
