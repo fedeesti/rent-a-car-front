@@ -1111,7 +1111,7 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
-      it('when deleting a car from the Car card, should delete it successfully', () => {
+      it('when deleting a client from the Client card, should delete it successfully', () => {
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
 
         cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
@@ -1417,8 +1417,51 @@ describe('Rent a car', () => {
           .and('contain', 'Add Reservation');
         cy.get('[data-cy="client-form-btn-container"]').should('not.exist');
       });
+      it('should create a reservation successfully', () => {
+        const reservationDto = {
+          startDate: '2023-08-14',
+          finishDate: '2023-08-20',
+          pricePerDay: '10000',
+          totalPrice: '60000',
+          paymentMethod: 'debit card',
+          statusId: 'true',
+          car: 1,
+          user: 1,
+        };
+
+        cy.get('[data-cy="dropdown-reservation-add"]').click();
+        cy.url().should('include', '/create');
+
+        cy.get('[data-cy="reservation-from-car"]').find('select').select(reservationDto.car);
+        cy.get('[data-cy="reservation-from-client"]').find('select').select(reservationDto.user);
+        cy.get('[data-cy="reservation-from-start-date"]')
+          .find('input')
+          .type(reservationDto.startDate);
+        cy.get('[data-cy="reservation-from-finish-date"]')
+          .find('input')
+          .type(reservationDto.finishDate);
+        cy.get('[data-cy="reservation-price-per-day"]')
+          .find('input')
+          .type(reservationDto.pricePerDay);
+        cy.get('[data-cy="reservation-total-price"]').find('input').type(reservationDto.totalPrice);
+        cy.get('[data-cy="reservation-payment-method"]')
+          .find('select')
+          .select(reservationDto.paymentMethod);
+        cy.get('[data-cy="reservation-status-true-container"]').find('input').check();
+
+        cy.intercept('POST', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="reservation-form-btn-add"]').click();
+
+        cy.url().should('not.include', '/create');
+        cy.get('[data-cy="reservation-table"]').should('exist').and('be.visible');
+      });
     });
-    describe.only('Edit Reservation', () => {
+    describe('Edit Reservation', () => {
       beforeEach(() => {
         cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
           fixture: './reservation/three-reservations.json',
@@ -1544,6 +1587,35 @@ describe('Rent a car', () => {
           .and('be.visible')
           .contains('Delete');
       });
+      it('should update a reservation successfully', () => {
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/three-clients.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.cars}`, { fixture: 'cars.json' });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.url().should('include', '/edit');
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('input').clear();
+        cy.get('[data-cy="reservation-total-price"]').find('input').clear();
+
+        cy.get('[data-cy="reservation-price-per-day"]').find('input').type('20000');
+        cy.get('[data-cy="reservation-total-price"]').find('input').type('90000');
+        cy.get('[data-cy="reservation-payment-method"]').find('select').select('credit card');
+
+        cy.intercept('PATCH', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/three-reservations.json',
+        });
+        cy.get('[data-cy="reservation-form-btn-update"]').click();
+
+        cy.url().should('not.include', '/edit');
+        cy.get('[data-cy="reservation-table"]').should('exist').and('be.visible');
+      });
     });
     describe('Delete Reservation', () => {
       beforeEach(() => {
@@ -1568,7 +1640,7 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
-      it('when deleting a reservation from the Car reservation, should delete it successfully', () => {
+      it('when deleting a reservation from the reservation card, should delete it successfully', () => {
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
 
         cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
@@ -1576,6 +1648,25 @@ describe('Rent a car', () => {
         });
         cy.get('[data-cy="tbody-row-actions-view"]').eq(0).click();
         cy.get('[data-cy="card-reservation-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}`, {
+          fixture: './reservation/two-reservations.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
+      it('when deleting a reservation from the form edit reservation, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.reservation}/1`, {
+          fixture: './reservation/one-reservation.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.get('[data-cy="reservation-form-btn-delete"]').click();
 
         cy.intercept('DELETE', `${URL_API_BASE}${route.reservation}/1`, {
           fixture: './reservation/one-reservation.json',

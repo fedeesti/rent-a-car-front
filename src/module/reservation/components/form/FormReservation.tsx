@@ -3,11 +3,14 @@ import useFormReservation from '../../hooks/useFormReservation';
 import { useParams } from 'react-router-dom';
 import { Client } from '../../../client/types/client';
 import { Car } from '../../../car/types/car.types';
+import Modal from '../modal/Modal';
+import useModalReservation from '../../hooks/useModalReservation';
 
 function FormReservation() {
   const { reservationId } = useParams();
   const { formData, clients, cars, onChangeInput, onChangeSelect, onSubmitForm } =
     useFormReservation(reservationId);
+  const { showModal, openModal, closeModal } = useModalReservation();
 
   return (
     <Formik initialValues={formData} enableReinitialize={true} onSubmit={onSubmitForm}>
@@ -189,6 +192,7 @@ function FormReservation() {
               </button>
               <button
                 type="button"
+                onClick={openModal}
                 className="text-red-600 bg-gray-100 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 data-cy="reservation-form-btn-delete"
               >
@@ -216,6 +220,7 @@ function FormReservation() {
               Add Reservation
             </button>
           )}
+          {showModal && <Modal id={Number(reservationId)} onClose={closeModal} />}
         </Form>
       )}
     </Formik>

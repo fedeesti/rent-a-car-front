@@ -20,7 +20,7 @@
       "transmission": "manual",
       "airConditioner": true
     },
-    "client": {
+    "user": {
       "id": 1,
       "name": "Javier",
       "lastname": "Milei",
@@ -54,7 +54,7 @@
       "transmission": "manual",
       "airConditioner": true
     },
-    "client": {
+    "user": {
       "id": 1,
       "name": "Javier",
       "lastname": "Milei",
