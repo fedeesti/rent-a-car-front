@@ -17,6 +17,7 @@ const INITIAL_VALUES: Client = {
 
 function useClientForm(id: string | undefined) {
   const [clientFormData, setClientFormData] = useState<Client>(INITIAL_VALUES);
+  const [client, setClient] = useState<Client>();
   const navigate = useNavigate();
 
   const getClient = async () => {
@@ -24,6 +25,7 @@ function useClientForm(id: string | undefined) {
       const service = new ClientService();
       const response = await service.getById(id);
       setClientFormData(response);
+      setClient(response);
     }
   };
 
@@ -54,7 +56,7 @@ function useClientForm(id: string | undefined) {
     }
   };
 
-  return { clientFormData, onChangeInput, onChangeSelect, onSubmitForm };
+  return { client, clientFormData, onChangeInput, onChangeSelect, onSubmitForm };
 }
 
 export default useClientForm;

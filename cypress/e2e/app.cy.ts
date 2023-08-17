@@ -1130,6 +1130,25 @@ describe('Rent a car', () => {
 
         cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
       });
+      it('when deleting a client from the form edit client, should delete it successfully', () => {
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 3);
+
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.get('[data-cy="tbody-row-actions-edit"]').eq(0).click();
+        cy.get('[data-cy="client-form-btn-delete"]').click();
+
+        cy.intercept('DELETE', `${URL_API_BASE}${route.clients}/1`, {
+          fixture: './client/one-client.json',
+        });
+        cy.intercept('GET', `${URL_API_BASE}${route.clients}`, {
+          fixture: './client/two-clients.json',
+        });
+        cy.get('[data-cy="modal-btn-confirm"]').click();
+
+        cy.get('[data-cy="tbody-row-container"]').should('have.length', 2);
+      });
     });
   });
 

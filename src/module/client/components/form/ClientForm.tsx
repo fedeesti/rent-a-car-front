@@ -1,10 +1,14 @@
 import { Form, Formik } from 'formik';
 import useClientForm from '../../hooks/useClientForm';
 import { useParams } from 'react-router-dom';
+import useClientModal from '../../hooks/useClientModal';
+import Modal from '../modal/Modal';
 
 function ClientForm() {
   const { clientId } = useParams();
-  const { clientFormData, onChangeInput, onChangeSelect, onSubmitForm } = useClientForm(clientId);
+  const { client, clientFormData, onChangeInput, onChangeSelect, onSubmitForm } =
+    useClientForm(clientId);
+  const { showModal, openModal, closeModal } = useClientModal();
 
   return (
     <Formik initialValues={clientFormData} enableReinitialize={true} onSubmit={onSubmitForm}>
@@ -165,6 +169,7 @@ function ClientForm() {
               </button>
               <button
                 type="button"
+                onClick={openModal}
                 className="text-red-600 bg-gray-100 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-md shadow-red-600/20 transition-all hover:shadow-lg hover:shadow-red-600/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 data-cy="client-form-btn-delete"
               >
@@ -191,6 +196,13 @@ function ClientForm() {
             >
               Add Client
             </button>
+          )}
+          {showModal && (
+            <Modal
+              id={Number(clientId)}
+              fullname={`${client?.name} ${client?.lastname}`}
+              onClose={closeModal}
+            />
           )}
         </Form>
       )}
