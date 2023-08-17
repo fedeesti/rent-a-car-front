@@ -19,10 +19,10 @@ function ReservationRow({ reservation }: IProps): JSX.Element {
       >
         <div>
           <div className="text-base font-semibold" data-cy="tbody-row-client-name">
-            {reservation.client.name} {reservation.client.lastname}
+            {reservation.user.name} {reservation.user.lastname}
           </div>
           <div className="font-normal text-gray-500" data-cy="tbody-row-client-email">
-            {reservation.client.email}
+            {reservation.user.email}
           </div>
         </div>
       </th>

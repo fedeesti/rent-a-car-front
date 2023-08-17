@@ -2,7 +2,7 @@ import { Reservation } from '../../types/reservation';
 import ReservationRow from './ReservationRow';
 
 interface IProps {
-  reservations: Reservation[];
+  reservations: Reservation[] | undefined;
 }
 
 function ReservationTable({ reservations }: IProps): JSX.Element {
