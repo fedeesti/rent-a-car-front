@@ -1,13 +1,16 @@
 import { Form, Formik } from 'formik';
 import useFormReservation from '../../hooks/useFormReservation';
 import { useParams } from 'react-router-dom';
+import { Client } from '../../../client/types/client';
+import { Car } from '../../../car/types/car.types';
 
 function FormReservation() {
   const { reservationId } = useParams();
-  const { formData, onSubmitForm } = useFormReservation();
+  const { formData, clients, cars, onChangeInput, onChangeSelect, onSubmitForm } =
+    useFormReservation();
 
   return (
-    <Formik initialValues={formData} onSubmit={onSubmitForm}>
+    <Formik initialValues={formData} enableReinitialize={true} onSubmit={onSubmitForm}>
       {() => (
         <Form>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6" data-cy="reservation-form-container">
@@ -17,14 +20,16 @@ function FormReservation() {
               </label>
               <select
                 id="car"
+                name="car"
+                onChange={onChangeSelect}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
                 <option value="">Select car</option>
-                {/* {cars.map((car: Car) => (
+                {cars?.map((car: Car) => (
                   <option key={car.id} value={car.id}>
-                    {car.brand} {car.model} - {car.year}
+                    {car.brand} {car.model} ({car.year})
                   </option>
-                ))} */}
+                ))}
               </select>
             </div>
             <div data-cy="reservation-from-client">
@@ -32,15 +37,17 @@ function FormReservation() {
                 Client
               </label>
               <select
-                id="client"
+                id="user"
+                name="user"
+                onChange={onChangeSelect}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
                 <option value="">Select client</option>
-                {/* {users.map((user: User) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name} {user.lastname}
+                {clients?.map((client: Client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name} {client.lastname}
                   </option>
-                ))} */}
+                ))}
               </select>
             </div>
             <div data-cy="reservation-from-start-date">
@@ -54,6 +61,7 @@ function FormReservation() {
                 type="date"
                 name="startDate"
                 id="startDate"
+                onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="1999"
               />
@@ -69,6 +77,7 @@ function FormReservation() {
                 type="date"
                 name="finishDate"
                 id="finishDate"
+                onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="1999"
               />
@@ -84,6 +93,7 @@ function FormReservation() {
                 type="text"
                 name="pricePerDay"
                 id="pricePerDay"
+                onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="Type price per Day"
               />
@@ -99,6 +109,7 @@ function FormReservation() {
                 type="text"
                 name="totalPrice"
                 id="totalPrice"
+                onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="Type total price"
               />
@@ -112,6 +123,8 @@ function FormReservation() {
               </label>
               <select
                 id="paymentMethod"
+                name="paymentMethod"
+                onChange={onChangeSelect}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
                 <option value="">Select payment method</option>
@@ -134,6 +147,7 @@ function FormReservation() {
                     name="statusId"
                     value="true"
                     checked={formData.statusId === 'true'}
+                    onChange={onChangeInput}
                   />
                   <label htmlFor="true" className="pl-0.5">
                     Yes
@@ -145,6 +159,7 @@ function FormReservation() {
                     name="statusId"
                     value="false"
                     checked={formData.statusId === 'false'}
+                    onChange={onChangeInput}
                   />
                   <label htmlFor="false" className="pl-0.5">
                     No
