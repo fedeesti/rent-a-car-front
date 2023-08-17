@@ -46,7 +46,7 @@ function ReservationCard({ reservation }: IProps) {
                 </p>
               </div>
               <div className="text-base font-medium text-gray-500 truncate">
-                {reservation?.client.name} {reservation?.client.lastname}
+                {reservation?.user.name} {reservation?.user.lastname}
               </div>
             </div>
           </li>

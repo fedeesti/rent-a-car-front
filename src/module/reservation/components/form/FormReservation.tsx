@@ -7,7 +7,7 @@ import { Car } from '../../../car/types/car.types';
 function FormReservation() {
   const { reservationId } = useParams();
   const { formData, clients, cars, onChangeInput, onChangeSelect, onSubmitForm } =
-    useFormReservation();
+    useFormReservation(reservationId);
 
   return (
     <Formik initialValues={formData} enableReinitialize={true} onSubmit={onSubmitForm}>
@@ -21,6 +21,7 @@ function FormReservation() {
               <select
                 id="car"
                 name="car"
+                value={formData.car}
                 onChange={onChangeSelect}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
@@ -39,6 +40,7 @@ function FormReservation() {
               <select
                 id="user"
                 name="user"
+                value={formData.user}
                 onChange={onChangeSelect}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
@@ -61,6 +63,7 @@ function FormReservation() {
                 type="date"
                 name="startDate"
                 id="startDate"
+                value={formData.startDate}
                 onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="1999"
@@ -77,6 +80,7 @@ function FormReservation() {
                 type="date"
                 name="finishDate"
                 id="finishDate"
+                value={formData.finishDate}
                 onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="1999"
@@ -93,6 +97,7 @@ function FormReservation() {
                 type="text"
                 name="pricePerDay"
                 id="pricePerDay"
+                value={formData.pricePerDay}
                 onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="Type price per Day"
@@ -109,6 +114,7 @@ function FormReservation() {
                 type="text"
                 name="totalPrice"
                 id="totalPrice"
+                value={formData.totalPrice}
                 onChange={onChangeInput}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="Type total price"
@@ -124,6 +130,7 @@ function FormReservation() {
               <select
                 id="paymentMethod"
                 name="paymentMethod"
+                value={formData.paymentMethod}
                 onChange={onChangeSelect}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
               >
